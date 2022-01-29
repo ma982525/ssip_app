@@ -1,10 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { SafeAreaView } from 'react-native-web';
+
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text21}>HomeScreen</Text>
-    </View>
+      <View style={styles.container}>
+        <Text style={styles.text21}>Home Page</Text>
+      </View>
   );
 }
 

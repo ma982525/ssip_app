@@ -1,20 +1,34 @@
 //import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
-import ProductScreen from '../screens/Products';
+import ProductScreen from '../screens/Appliances';
+import AddAppliancesPage from '../screens/AddAppliances';
 import RoomsScreen from '../screens/Rooms';
 import SettingScreen from '../screens/Settings';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddRoomsScreen from '../screens/AddRoom';
-import { Text,StyleSheet,View } from 'react-native';
+import { Text,StyleSheet,View} from 'react-native';
+
+const Ar = createStackNavigator();
+
+const RoomNav = () =>{
+  return(
+    < Ar.Navigator initialRouteName='AddRoom'>
+      < Ar.Screen name="AddRoom" component={ RoomsScreen }  options={{headerShown: false}}/>
+      < Ar.Screen name="AddApp" component={ AddAppliancesPage } options={{headerShown: false}}/>
+    </ Ar.Navigator>
+  )
+    
+}
+
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
     return (
         <Tab.Navigator
-            initialRouteName='Home'
-            backBehaviour={'none'}
+            backBehavior='history'
             screenOptions={{
                 "tabBarShowLabel":false,
                 "tabBarStyle":{
@@ -25,26 +39,31 @@ const Tabs = () => {
                     "right":20,
                     "elevation":0,
                     "borderRadius": 15,
-                    "height":90,
+                    "height":80,
                     ...style.shadow
                 },
                 headerStyle: { backgroundColor: '#301A4B' },
                 headerTintColor: '#fff',
-                headerTitleStyle: { fontWeight: 'bold',padding:10}
+                headerTitleStyle: { fontWeight: 'bold',padding:10},
+                tabBarHideOnKeyboard: true,
+                headerTitleAlign:"center",
+                headerTitleAllowFontScaling:true,
+                headerBackVisible:true,
             }}
         >
             <Tab.Screen
-                name="Home"
+                name="HomeScreen"
                 component={HomeScreen}
                 options={{
                     tabBarIcon: ({color,focused}) => (
                         <Icon name="home-automation" color={focused?'#ffd43b':color} size={30} />
                     ),
+                    headerShown:false,
                 }}
             />
             <Tab.Screen
                 name="Rooms"
-                component={RoomsScreen}
+                component={RoomNav}
                 options={{
                     tabBarColor: '#ffd43b',
                     title:'All Rooms',
@@ -54,6 +73,8 @@ const Tabs = () => {
                     tabBarIcon: ({color,focused}) => (
                         <Icon name="sofa" color={focused?'#ffd43b':color} size={30} />
                     ),
+                    headerShown:false,
+                    
                 }}
             />
             <Tab.Screen
@@ -63,9 +84,10 @@ const Tabs = () => {
                     tabBarColor: '#d02760',
                     tabBarIcon: ({color,focused}) => (
                         <View style={{backgroundColor:focused?'#ffd43b':'#fff',borderRadius:50,position:'absolute',top:-25,padding:10,borderWidth:5,borderColor:'#301A4B'}}>
-                        <Icon color={focused?'#000':'#301A4B'} name="plus" size={60} />
+                            <Icon color={focused?'#000':'#301A4B'} name="plus" style={style.plus}  />
                         </View>
                     ),
+                    headerShown:false
                 }}
             />
             <Tab.Screen
@@ -76,6 +98,7 @@ const Tabs = () => {
                     tabBarIcon: ({color,focused}) => (
                         <Icon name="lightbulb-on" color={focused?'#ffd43b':color} size={30} />
                     ),
+                    headerShown:false,
                 }}
             />
             <Tab.Screen
@@ -103,8 +126,9 @@ const style=StyleSheet.create({
         shadowRadius: 5.5,
         elevation: 5
     },
-    title:{
+    plus:{
         fontSize:50,
+        aspectRatio:1,
     }
 });
 

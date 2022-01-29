@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
+import AddRoomPage from './AddRoomPage';
 
 export default function AddRoomsScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text21}>AddRoomsScreen</Text>
+      <AddRoomPage />
     </View>
   );
 }

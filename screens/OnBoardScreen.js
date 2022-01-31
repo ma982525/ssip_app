@@ -48,20 +48,20 @@ const OnBoardScreen = ({navigation}) => {
                 {
                     backgroundColor: '#FFE5E5',
                     image: <Image source={img1} size={10}/>,
-                    title: 'Onboarding',
-                    subtitle: 'Done with React Native Onboarding Swiper',
+                    title: 'Super Home',
+                    subtitle: 'Make your Home Smart & remotely Automated',
                 },
                 {
                     backgroundColor: '#FFFAEC',
                     image: <Image source={img2} />,
-                    title: 'Onboarding',
-                    subtitle: 'Done with React Native Onboarding Swiper',
+                    title: 'Quick Handle',
+                    subtitle: 'Control your appliances on a single click.',
                 },
                 {
                     backgroundColor: '#E8F3FF',
                     image: <Image source={img3} />,
-                    title: 'Onboarding',
-                    subtitle: 'Done with React Native Onboarding Swiper',
+                    title: 'Track Usage',
+                    subtitle: 'Track daily usage and compare weekly reports.',
                 },
             ]}
         />

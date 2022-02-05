@@ -1,21 +1,41 @@
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { ScrollView } from 'react-native-gesture-handler';
+import { ListComponentsButton } from '../components/ListComponentsButton.js';
+import COLORS from "../const/colors"
+import styles from "../const/styles"
+import AddHeaderButton from '../components/AddHeaderButton';
 
 export default function ProductScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text21}>ProductScreen</Text>
-    </View>
+    <ScrollView style={
+      { flex: 1 },
+      { backgroundColor: COLORS.white }}>
+
+      <AddHeaderButton text="All Appliances" />
+      <ScrollView style={styles.SettingStyle}>
+        <ListComponentsButton
+          buttonTitle="SYSKA LED 15W"
+          btnType="lightbulb-outline"
+          btnColor={COLORS.theme}
+        />
+        <ListComponentsButton
+          buttonTitle="FAN"
+          btnType="fan"
+          btnColor={COLORS.theme}
+        />
+
+        <ListComponentsButton
+          buttonTitle="Air Condition"
+          btnType="air-conditioner"
+          btnColor={COLORS.theme}
+        />
+
+        <ListComponentsButton
+          buttonTitle="SYSKA LED 15W"
+          btnType="lightbulb-outline"
+          btnColor={COLORS.theme}
+        />
+      </ScrollView>
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text21:{
-      fontSize: 25,
-  },
-});

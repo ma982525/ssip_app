@@ -214,6 +214,10 @@ const styles = StyleSheet.create({
   },
   mystyle:{
     textAlign:'center'
+  },
+  settingMainScreen  : {
+    flex: 1,
+    backgroundColor: "white",
   }
 });
 export default styles

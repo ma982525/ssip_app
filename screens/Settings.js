@@ -10,7 +10,7 @@ import { useNavigation, StackActions } from "@react-navigation/native";
 import { authicaton } from "../const/firebase";
 import { signOut } from "firebase/auth";
 import { deleteUser } from "firebase/auth";
-import {fire} from "react-native-alertbox";
+import {AlertBox, fire} from "react-native-alertbox";
 
 export default function SettingScreen() {
 
@@ -64,6 +64,8 @@ export default function SettingScreen() {
   };
 
   return (
+    <View style={styles.settingMainScreen}>
+      <AlertBox/>
     <ScrollView style={styles.SettingStyle}>
       <Text>{name}</Text>
       <SettingButton
@@ -97,5 +99,6 @@ export default function SettingScreen() {
         }}
       />
     </ScrollView>
+    </View>
   );
 }

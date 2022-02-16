@@ -1,44 +1,91 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import { React, useState } from "react";
 import styles from "../const/styles";
-import SocialButton from '../components/SocialButton'
-import {
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  ScrollView
-} from "react-native";
+import SocialButton from "../components/SocialButton";
+import { authicaton } from "../const/firebase";
+import { signInWithEmailAndPassword , signInWithPopup , GoogleAuthProvider} from "firebase/auth";
+import { Text,View,TextInput,TouchableOpacity,KeyboardAvoidingView,ScrollView} from "react-native";
 import { windowHeight, windowWidth } from "../const/Dimensions";
-import Tabs from "../components/Navigation";
+
 
 const Login = ({ props, navigation }) => {
   const [userEmail, setUserEmail] = useState("");
-  const [password, setPassword] = useState("");  
-  const [errortext, setErrortext] = useState('');
+  const [password, setPassword] = useState("");
+  const [errortext, setErrortext] = useState("");
+
+  const googleLogin = () =>
+  {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(authicaton,provider)
+    .then((result) => {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      navigation.replace("Home");
+      const user = result.user;
+     
+    }).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const email = error.email;
+      const credential = GoogleAuthProvider.credentialFromError(error);
+    });
+  }
+
 
   const handleSubmitPress = () => {
-    setErrortext('');
+    setErrortext("");
     if (!userEmail) {
-      alert('Please Enter Your Email');
+      alert("Please Enter Your Email");
       return;
     }
     if (!password) {
-      alert('Please Enter Your Password');
+      alert("Please Enter Your Password");
       return;
     }
-    navigation.replace('Home');
-  }
+    if (password.length == 6) {
+      alert("Password must be 6 digit");
+      return;
+    }
+    if (userEmail != "\0" && password != "\0") 
+    {
+      
+      signInWithEmailAndPassword(authicaton, userEmail, password)
+        .then((userCredential) => 
+        {
+          
+          navigation.replace("Home");
+          const user = userCredential.user;
+        })
+        .catch((error) => 
+        {
+          
+          if (error.code === "auth/email-already-in-use") 
+          {
+            alert("Your Email ID Already IN Use");
+          }
+          if (error.code === "auth/user-not-found") 
+          {
+            alert("User Not Found!");
+          }
+          if (error.code === "auth/wrong-password") 
+          {
+            alert("Enter Correct Password!");
+          }
+        });
+    }
+  };
 
   return (
-
-
     <ScrollView>
-      <KeyboardAvoidingView style={{ flex: 1, alignItems: 'center', height: '100%', marginTop: windowHeight / 6 }}>
-        
+      <KeyboardAvoidingView
+        style={{
+          flex: 1,
+          alignItems: "center",
+          height: "100%",
+          marginTop: windowHeight / 6,
+        }}
+      >
         <Text style={styles.TextView}>Login</Text>
-        
 
         <StatusBar style="auto" />
         <View style={styles.inputView}>
@@ -63,17 +110,12 @@ const Login = ({ props, navigation }) => {
         <TouchableOpacity>
           <Text style={styles.forgot_button}>Forgot Password?</Text>
         </TouchableOpacity>
-        {/* {errortext != '' ? (
-          <Text style={styles.errorTextStyle}>
-            {errortext}
-          </Text>
-        ) : null} */}
+        
         <TouchableOpacity style={styles.loginBtn} onPress={handleSubmitPress}>
-          <Text style={{ color: "white", fontWeight: 'bold' }}>LOGIN</Text>
+          <Text style={{ color: "white", fontWeight: "bold" }}>LOGIN</Text>
         </TouchableOpacity>
 
-
-        {Platform.OS === 'android' ? (
+        {Platform.OS === "android" ? (
           <View>
             <SocialButton
               buttonTitle="Sign In with Facebook"
@@ -88,21 +130,20 @@ const Login = ({ props, navigation }) => {
               btnType="google"
               color="#de4d41"
               backgroundColor="#f5e7ea"
-              onPress={() => googleLogin()}
+              onPress={ () =>{googleLogin();} }
             />
           </View>
         ) : null}
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Signup')}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
           <View style={{ height: 10, margin: 50 }}>
-            <Text style={styles.forgot_button}>Don't have Account Create One?</Text>
+            <Text style={styles.forgot_button}>
+              Don't have Account Create One?
+            </Text>
           </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </ScrollView>
-
   );
-}
-export default Login
+};
+export default Login;

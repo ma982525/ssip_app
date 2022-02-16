@@ -11,13 +11,13 @@ const ListComponentsButton = ({
   buttonTitle,
   btnType,
   btnColor,
-  ...rest
+  onPress
 }) => {
   return (
   <View>
     <TouchableOpacity
-      style={[sty.rt,{backgroundColor: btnColor}]}
-      {...rest}>
+      onPress = {onPress}
+      style={[sty.rt,{backgroundColor: btnColor}]}>
         
       <View style={sty.btnTxtWrapper}>
         <FontAwesome name={btnType} size={22} color={COLORS.white} style={{paddingLeft:10,width:'10%'}}/>

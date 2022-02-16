@@ -9,19 +9,29 @@ import SettingScreen from '../screens/Settings';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddRoomsScreen from '../screens/AddRoom';
 import { Text,StyleSheet,View} from 'react-native';
-
+import ApplianceInner from "../screens/ApplianceInnerScreen"
 const Ar = createStackNavigator();
 
 const RoomNav = () =>{
   return(
     < Ar.Navigator initialRouteName='AddRoom'>
-      < Ar.Screen name="AddRoom" component={ RoomsScreen }  options={{headerShown: false}}/>
-      < Ar.Screen name="AddApp" component={ AddAppliancesPage } options={{headerShown: false}}/>
+      < Ar.Screen name="AddRoom" component={ RoomsScreen }  options={{headerShown: false}} />
+      < Ar.Screen name="AddApp" component={ AddAppliancesPage } options={{headerShown: false}} />
     </ Ar.Navigator>
+  )
+
+}
+
+const Appstack = createStackNavigator();
+const  AppNav = () =>{
+  return(
+    < Appstack.Navigator initialRouteName='AllProduct'>
+        <Appstack.Screen name="AllProduct" component={ ProductScreen }  options={{headerShown: false} }/>
+        <Appstack.Screen name="InnerProduct" component={ ApplianceInner }  options={{headerShown: false}}/>
+    </ Appstack.Navigator>
   )
     
 }
-
 
 const Tab = createBottomTabNavigator();
 
@@ -61,6 +71,7 @@ const Tabs = () => {
                     headerShown:false,
                 }}
             />
+
             <Tab.Screen
                 name="Rooms"
                 component={RoomNav}
@@ -77,6 +88,7 @@ const Tabs = () => {
                     
                 }}
             />
+
             <Tab.Screen
                 name="Add Rooms"
                 component={AddRoomsScreen}
@@ -90,9 +102,10 @@ const Tabs = () => {
                     headerShown:false
                 }}
             />
+
             <Tab.Screen
                 name="Appliances"
-                component={ProductScreen}
+                component={ AppNav }
                 options={{
                     tabBarColor: '#ffd43b',
                     tabBarIcon: ({color,focused}) => (

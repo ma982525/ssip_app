@@ -2,6 +2,8 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import styles from "../const/styles"
 import SocialButton from "../components/SocialButton";
+import { authicaton } from "../const/firebase";
+import { createUserWithEmailAndPassword , updateProfile } from "firebase/auth"
 import {
   Text,
   View,
@@ -15,6 +17,7 @@ const Signup = ({navigation}) => {
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
+  const [YourName, setYourName] = useState("");
   const [errortext, setErrortext] = useState('');
 
   const handleSubmitPress = () => {
@@ -35,7 +38,21 @@ const Signup = ({navigation}) => {
       alert('Passwords not matching');
       return;
     }
-    navigation.navigate('Login');
+    if(password.length==6){
+      alert('Password must be 6 digit');
+      return;
+    }
+    if((userEmail!='\0')&&(password!='\0') && (confirmpassword!='\0') && (password == confirmpassword) )
+    {
+      createUserWithEmailAndPassword(authicaton,userEmail,password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        updateProfile(user,{displayName : YourName })
+        navigation.navigate('Login');
+      })
+      
+    }
+    
   }
   return (
     <ScrollView> 
@@ -44,6 +61,16 @@ const Signup = ({navigation}) => {
       <Text style={styles.TextView}>Create An Account</Text>
 
       <StatusBar style="auto" />
+      
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Your Name"
+          placeholderTextColor="#301A4B"
+          onChangeText={(YourName) => setYourName(YourName)}
+        />
+      </View>
+
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}

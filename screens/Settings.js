@@ -8,12 +8,17 @@ import styles from "../const/styles";
 import { LogoutButton } from "../components/LogoutButton";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { authicaton } from "../const/firebase";
-import { signOut } from "firebase/auth";
+import {
+  EmailAuthCredential,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  signOut,
+  updatePassword,
+} from "firebase/auth";
 import { deleteUser } from "firebase/auth";
-import {AlertBox, fire} from "react-native-alertbox";
+import { AlertBox, fire } from "react-native-alertbox";
 
 export default function SettingScreen() {
-
   const [isDialogVisible, setDialogVisible] = useState(false);
   const user = authicaton.currentUser;
   const name = user.displayName;
@@ -38,6 +43,7 @@ export default function SettingScreen() {
   };
 
   const logout = () => {
+
     Alert.alert("Logout", "Are you Want to log out", [
       {
         text: "Cancel",
@@ -55,50 +61,82 @@ export default function SettingScreen() {
     ]);
   };
 
-
   const resetpassword = () => {
-    return(
-      fire({title: 'Title', message: 'Some text message'})
-    )
-      
+    return fire({
+      title: "Update Password",
+      message: "Please enter your old and newPassword and then click approve",
+      actions: [
+        {
+          text: "Close",
+          style: "cancel",
+        },
+        {
+          text: "Submit",
+          onPress: (data) => {
+            const crad = EmailAuthProvider.credential(
+              user.email,
+              data.OldPassword
+            );
+            reauthenticateWithCredential(user, crad).then(() => {
+              updatePassword(user, data.NewPassword).then(() => {
+                const resetAction = StackActions.replace("Auth");
+                nav.dispatch(resetAction);
+              });
+            });
+          }, // It is an object that holds fields data
+        },
+      ],
+      fields: [
+        {
+          name: "OldPassword",
+          placeholder: "OldPassword",
+        },
+        {
+          name: "NewPassword",
+          placeholder: "NewPassword",
+        },
+      ],
+    });
   };
 
   return (
     <View style={styles.settingMainScreen}>
-      <AlertBox/>
-    <ScrollView style={styles.SettingStyle}>
-      <Text>{name}</Text>
-      <SettingButton
-        buttonTitle="Edit Details"
-        btnType="account-edit"
-        btnColor={COLORS.theme}
-      />
-      <SettingButton
-        buttonTitle="Edit Password"
-        btnType="lock"
-        btnColor={COLORS.theme}
-        onPress={() => {resetpassword()}}
-      />
+      <AlertBox />
+      <ScrollView style={styles.SettingStyle}>
+        <Text>{name}</Text>
+        <SettingButton
+          buttonTitle="Edit Details"
+          btnType="account-edit"
+          btnColor={COLORS.theme}
+        />
+        <SettingButton
+          buttonTitle="Edit Password"
+          btnType="lock"
+          btnColor={COLORS.theme}
+          onPress={() => {
+            resetpassword();
+          }}
+        />
 
-      <SettingButton
-        buttonTitle="Delete Account"
-        btnType="delete-empty"
-        btnColor={COLORS.theme}
-        onPress={() => {
-          deleteuser();
-        }}
-      />
+        <SettingButton
+          buttonTitle="Delete Account"
+          btnType="delete-empty"
+          btnColor={COLORS.theme}
+          onPress={() => {
+            deleteuser();
+          }}
+        />
 
-      <LogoutButton
-        buttonTitle="LOGOUT"
-        btnType="logout"
-        btnColor={COLORS.red}
-        mystyle="logout"
-        onPress={() => {
-          logout();
-        }}
-      />
-    </ScrollView>
+        <LogoutButton
+          buttonTitle="LOGOUT"
+          btnType="logout"
+          btnColor={COLORS.red}
+          mystyle="logout"
+          onPress={() => {
+            logout();
+          }}
+        />
+      </ScrollView>
     </View>
   );
 }

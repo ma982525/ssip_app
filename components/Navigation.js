@@ -50,6 +50,7 @@ const Tabs = () => {
                     "elevation":0,
                     "borderRadius": 15,
                     "height":80,
+                    "zIndex" : 10,
                     ...style.shadow
                 },
                 headerStyle: { backgroundColor: '#301A4B' },

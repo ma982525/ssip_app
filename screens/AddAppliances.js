@@ -1,17 +1,43 @@
-import React from "react";
+import React,{useState} from "react";
+import { useRoute } from "@react-navigation/native";
+
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput,KeyboardAvoidingView } from "react-native";
 import AddHeaderButton from "../components/AddHeaderButton";
 import Textfiled from "../components/Textfiled";
 import COLORS from "../const/colors";
 import styles from "../const/styles";
+import { useNavigation } from "@react-navigation/native";
+import { database,authicaton } from "../const/firebase";
+import { ref,update} from "firebase/database";
+const saveData = () =>
+{
+  navigation.navigate('HomeScreen')
+}
 
-const AddAppliances = props => {
+
+const AddAppliances = () => {
+
+
+
+  const navigation=useNavigation();
+  const route= useRoute();
+  const RoomName = route.params.RoomName;
+
+
+  const user = authicaton.currentUser;
+  const uid = user.uid;
+
+  const [ApplianceName, setApplianceName] = useState(null);
+  const [ApplianceID, setApplianceID] = useState(null);
+  const [ApplianceKey, setApplianceKey] = useState(null);
+  const [ApplianceCategory, setApplianceCategory] = useState(null);
+
+
   return (
     <ScrollView >
       <KeyboardAvoidingView style={{ flex: 1, height: '100%',width:'100%',marginBottom:80 }}>
 
       <AddHeaderButton text="Add Appliances" />
-
       <View style={[styles.marginsetOfTextConatiner, { paddingTop: 30 }]}>
 
         <Text style={{ fontSize: 18, paddingBottom: 10 }}>Enter All Details About Appliances
@@ -22,6 +48,8 @@ const AddAppliances = props => {
             style={styles.TextInput}
             placeholder="Enter Appliance Name"
             placeholderTextColor="grey"
+            onChangeText={setApplianceName}
+            value={ApplianceName}
           />
         </View>
         <View style={styles.inputView100}>
@@ -29,6 +57,8 @@ const AddAppliances = props => {
             style={styles.TextInput}
             placeholder="Enter Appliance ID"
             placeholderTextColor="grey"
+            onChangeText={setApplianceID}
+            value={ApplianceID}
           />
         </View>
         <View style={styles.inputView100}>
@@ -36,6 +66,8 @@ const AddAppliances = props => {
             style={styles.TextInput}
             placeholder="Enter Appliance Key"
             placeholderTextColor="grey"
+            onChangeText={setApplianceKey}
+            value={ApplianceKey}
           />
         </View>
         <View style={styles.inputView100}>
@@ -43,37 +75,36 @@ const AddAppliances = props => {
             style={styles.TextInput}
             placeholder="Enter Appliance Category"
             placeholderTextColor="grey"
+            onChangeText={setApplianceCategory}
+            value={ApplianceCategory}
           />
         </View>
-        {/*       
-          <Textfiled 
-           placeholder={"Appliances Name"}
-           label={"Add Appliances Name"}
-          />
-
-          <Textfiled 
-           placeholder={"Appliances ID"}
-           label={"Add Appliances ID"}
-          />
-
-          <Textfiled 
-           placeholder={"Appliances Key"}
-           label={"Add Appliances Key"}
-          />
-
-          <Textfiled 
-           placeholder={"Appliances Category"}
-           label={"Add Appliances Category"}
-          /> */}
       </View>
 
-      <View style={[styles.buttonAdd, { height: 50, marginLeft: 20, marginRight: 20 }]} >
-        <TouchableOpacity onPress={() => props.navigation.navigate('HomeScreen')}>
+      <View style={[styles.buttonAdd, { height: 50, marginLeft: 20, marginRight: 20,marginBottom :20 }]} >
+        <TouchableOpacity onPress={() => {
+            setApplianceCategory(null);
+            setApplianceID(null);
+            setApplianceKey(null);
+            setApplianceName(null);
+            navigation.navigate("AddApp",{RoomName : RoomName});
+        }}>
           <Text style={styles.TextOfButtonInner2}>
-            SUBMIT
+            Add More Appliance
           </Text>
         </TouchableOpacity>
       </View>
+
+      <View style={[styles.buttonAdd, { height: 50, marginLeft: 20, marginRight: 20 }]} >
+        <TouchableOpacity onPress={() => {
+            navigation.goBack();
+            }}>
+          <Text style={styles.TextOfButtonInner2}>
+            Submit
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       </KeyboardAvoidingView>
     </ScrollView>
   )

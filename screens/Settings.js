@@ -7,7 +7,9 @@ import COLORS from "../const/colors";
 import styles from "../const/styles";
 import { LogoutButton } from "../components/LogoutButton";
 import { useNavigation, StackActions } from "@react-navigation/native";
-import { authicaton } from "../const/firebase";
+import {onChildRemoved, remove,set,ref} from "firebase/database";
+
+import { authicaton, database } from "../const/firebase";
 import {
   EmailAuthCredential,
   EmailAuthProvider,
@@ -18,10 +20,12 @@ import {
 import { deleteUser } from "firebase/auth";
 import { AlertBox, fire } from "react-native-alertbox";
 
+
 export default function SettingScreen() {
   const [isDialogVisible, setDialogVisible] = useState(false);
   const user = authicaton.currentUser;
   const name = user.displayName;
+  const uid = user.uid;
   const nav = useNavigation();
 
   const deleteuser = () => {
@@ -33,7 +37,9 @@ export default function SettingScreen() {
       {
         text: "OK",
         onPress: () => {
+          
           deleteUser(user).then(() => {
+            remove(ref(database,'/'+uid));
             const resetAction = StackActions.replace("Auth");
             nav.dispatch(resetAction);
           });
@@ -53,6 +59,7 @@ export default function SettingScreen() {
         text: "OK",
         onPress: () => {
           signOut(authicaton).then(() => {
+
             const resetAction = StackActions.replace("Auth");
             nav.dispatch(resetAction);
           });
@@ -98,7 +105,7 @@ export default function SettingScreen() {
       ],
     });
   };
-
+  
   return (
     <View style={styles.settingMainScreen}>
       <AlertBox />

@@ -6,9 +6,11 @@ import { authicaton } from "../const/firebase";
 import { signInWithEmailAndPassword , signInWithPopup , GoogleAuthProvider} from "firebase/auth";
 import { Text,View,TextInput,TouchableOpacity,KeyboardAvoidingView,ScrollView} from "react-native";
 import { windowHeight, windowWidth } from "../const/Dimensions";
+import { useNavigation } from "@react-navigation/native";
 
 
 const Login = ({ props, navigation }) => {
+  const nav = useNavigation()
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errortext, setErrortext] = useState("");
@@ -20,7 +22,7 @@ const Login = ({ props, navigation }) => {
     .then((result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
-      navigation.replace("Home");
+      navigation.replace("Tabs");
       const user = result.user;
      
     }).catch((error) => {
@@ -49,12 +51,11 @@ const Login = ({ props, navigation }) => {
     if (userEmail != "\0" && password != "\0") 
     {
       
-      signInWithEmailAndPassword(authicaton, userEmail, password)
+        signInWithEmailAndPassword(authicaton, userEmail, password)
         .then((userCredential) => 
         {
-          
-          navigation.replace("Home");
           const user = userCredential.user;
+          nav.replace("home");
         })
         .catch((error) => 
         {

@@ -2,7 +2,9 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import styles from "../const/styles"
 import SocialButton from "../components/SocialButton";
-import { authicaton } from "../const/firebase";
+import { authicaton, database } from "../const/firebase";
+import { firestore } from "../const/firebase";
+import {addDoc,collection} from "firebase/firestore"
 import { createUserWithEmailAndPassword , updateProfile } from "firebase/auth"
 import {
   Text,
@@ -47,7 +49,14 @@ const Signup = ({navigation}) => {
       createUserWithEmailAndPassword(authicaton,userEmail,password)
       .then((userCredential) => {
         const user = userCredential.user;
-        updateProfile(user,{displayName : YourName })
+        try {
+          const docRef =  addDoc(collection(firestore, user.uid), {
+            name : YourName,
+            email : userEmail
+          })
+        } catch (e) {
+          console.error("Error adding document: ", e);
+        }
         navigation.navigate('Login');
       })
       

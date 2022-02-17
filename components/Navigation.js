@@ -10,12 +10,15 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddRoomsScreen from '../screens/AddRoom';
 import { Text,StyleSheet,View} from 'react-native';
 import ApplianceInner from "../screens/ApplianceInnerScreen"
+import AddRoomPage from '../screens/AddRoomPage';
+
+
 const Ar = createStackNavigator();
 
 const RoomNav = () =>{
   return(
     < Ar.Navigator initialRouteName='AddRoom'>
-      < Ar.Screen name="AddRoom" component={ RoomsScreen }  options={{headerShown: false}} />
+      < Ar.Screen name="AddRoom" component={ AddRoomPage }  options={{headerShown: false}} />
       < Ar.Screen name="AddApp" component={ AddAppliancesPage } options={{headerShown: false}} />
     </ Ar.Navigator>
   )
@@ -51,6 +54,7 @@ const Tabs = () => {
                     "borderRadius": 15,
                     "height":80,
                     "zIndex" : 10,
+                    "tabBarHideOnKeyboard":true,
                     ...style.shadow
                 },
                 headerStyle: { backgroundColor: '#301A4B' },
@@ -75,7 +79,7 @@ const Tabs = () => {
 
             <Tab.Screen
                 name="Rooms"
-                component={RoomNav}
+                component={ RoomsScreen }
                 options={{
                     tabBarColor: '#ffd43b',
                     title:'All Rooms',
@@ -92,7 +96,7 @@ const Tabs = () => {
 
             <Tab.Screen
                 name="Add Rooms"
-                component={AddRoomsScreen}
+                component={ RoomNav}
                 options={{
                     tabBarColor: '#d02760',
                     tabBarIcon: ({color,focused}) => (

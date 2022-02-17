@@ -10,6 +10,7 @@ const SettingButton = ({
   btnColor,
   onPress
 }) => {
+  
   return (
   <View styles={{alignContent: "center"}}>
     <TouchableOpacity

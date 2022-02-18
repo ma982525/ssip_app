@@ -5,18 +5,18 @@ import Textfiled from "../components/Textfiled";
 import COLORS from "../const/colors";
 import styles from "../const/styles";
 import { useNavigation } from '@react-navigation/native';
-import { database , authicaton } from "../const/firebase";
-import {ref,set} from "firebase/database";
+import { database , authicaton ,firestore} from "../const/firebase";
+import {addDoc, collection,doc, setDoc} from "firebase/firestore"
 
 
 const AddRoomPage = () => {
+  const navigation=useNavigation();
 
   const [Room, onChangeText] = React.useState();
   const user = authicaton.currentUser;
   const name = user.displayName;
   const uid = user.uid;
-
-  const navigation=useNavigation();
+    
   
   return (
     <ScrollView style={
@@ -40,7 +40,8 @@ const AddRoomPage = () => {
       <View style={[styles.Submit, { height: 50 },
       { marginLeft: 20 },
       { marginRight: 20 }]} >
-        <TouchableOpacity onPress={() => {navigation.navigate("AddApp",{RoomName : Room })}}>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate("AddApp",{ RoomName : Room })}}>
           <Text style={styles.TextOfButtonInner2}>
             SUBMIT
           </Text>

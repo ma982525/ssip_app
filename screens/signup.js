@@ -4,7 +4,7 @@ import styles from "../const/styles"
 import SocialButton from "../components/SocialButton";
 import { authicaton, database } from "../const/firebase";
 import { firestore } from "../const/firebase";
-import {addDoc,collection} from "firebase/firestore"
+import {addDoc,collection,setDoc,doc} from "firebase/firestore"
 import { createUserWithEmailAndPassword , updateProfile } from "firebase/auth"
 import {
   Text,
@@ -16,6 +16,8 @@ import {
 import {windowHeight, windowWidth} from "../const/Dimensions";
 
 const Signup = ({navigation}) => {
+
+
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
@@ -50,10 +52,12 @@ const Signup = ({navigation}) => {
       .then((userCredential) => {
         const user = userCredential.user;
         try {
-          const docRef =  addDoc(collection(firestore, user.uid), {
-            name : YourName,
-            email : userEmail
-          })
+
+          const ref = doc(firestore,user.uid,"user" ); 
+          const ref1 = doc(firestore,user.uid,"user1" );
+          setDoc(ref, {name : YourName});
+          setDoc(ref1, {name : YourName});
+          
         } catch (e) {
           console.error("Error adding document: ", e);
         }

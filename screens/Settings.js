@@ -7,9 +7,9 @@ import COLORS from "../const/colors";
 import styles from "../const/styles";
 import { LogoutButton } from "../components/LogoutButton";
 import { useNavigation, StackActions } from "@react-navigation/native";
-import {onChildRemoved, remove,set,ref} from "firebase/database";
-
-import { authicaton, database } from "../const/firebase";
+import {deleteUser,} from "firebase/auth"
+import {deleteDoc,doc,collection, getDoc} from "firebase/firestore"
+import { authicaton, database , firestore } from "../const/firebase";
 import {
   EmailAuthCredential,
   EmailAuthProvider,
@@ -17,12 +17,12 @@ import {
   signOut,
   updatePassword,
 } from "firebase/auth";
-import { deleteUser } from "firebase/auth";
+
 import { AlertBox, fire } from "react-native-alertbox";
 
 
 export default function SettingScreen() {
-  const [isDialogVisible, setDialogVisible] = useState(false);
+
   const user = authicaton.currentUser;
   const name = user.displayName;
   const uid = user.uid;
@@ -39,7 +39,7 @@ export default function SettingScreen() {
         onPress: () => {
           
           deleteUser(user).then(() => {
-            remove(ref(database,'/'+uid));
+            
             const resetAction = StackActions.replace("Auth");
             nav.dispatch(resetAction);
           });

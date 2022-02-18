@@ -7,7 +7,7 @@ const AddHeaderButton = ({text}) => {
   return (
     <View style={{
       flex: 1, flexDirection: 'row', alignContent: "center",
-      justifyContent: "center",marginTop : 40
+      justifyContent: "center"
     }}>
 
       <View>

@@ -7,17 +7,21 @@ import COLORS from '../const/colors'
 import FontAwesome from 'react-native-vector-icons/MaterialCommunityIcons';
 import { windowWidth } from '../const/Dimensions';
 
+
 const ListComponentsButton = ({
   buttonTitle,
   btnType,
   btnColor,
-  ...rest
+  link,
+  navigation,
 }) => {
-  return (
+  return ( 
   <View>
     <TouchableOpacity
-      style={[sty.rt,{backgroundColor: btnColor}]}
-      {...rest}>
+      style={[sty.rt,{backgroundColor: btnColor}]} 
+      
+      onPress={()=>navigation.navigate(link,{title:buttonTitle})}
+      >
         
       <View style={sty.btnTxtWrapper}>
         <FontAwesome name={btnType} size={22} color={COLORS.white} style={{paddingLeft:10,width:'10%'}}/>

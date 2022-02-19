@@ -9,6 +9,18 @@ import SettingScreen from '../screens/Settings';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddRoomsScreen from '../screens/AddRoom';
 import { Text,StyleSheet,View} from 'react-native';
+import ApplianceInner from '../screens/ApplianceInnerScreen';
+
+const Appstack = createStackNavigator();
+const AppNav = () =>{
+  return(
+    < Appstack.Navigator>
+      <Appstack.Screen name="AllProduct" component={ ProductScreen }  options={{headerShown: false}}/>
+      <Appstack.Screen name="InnerProduct" component={ ApplianceInner }  options={{headerShown: false}}/>
+    </ Appstack.Navigator>
+  )
+    
+}
 
 const Ar = createStackNavigator();
 
@@ -34,7 +46,7 @@ const Tabs = () => {
                 "tabBarStyle":{
                     "position":'absolute',
                     "backgroundColor":'#301A4B',
-                    "bottom":25,
+                    "bottom":20,
                     "left":20,
                     "right":20,
                     "elevation":0,
@@ -92,7 +104,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Appliances"
-                component={ProductScreen}
+                component={AppNav}
                 options={{
                     tabBarColor: '#ffd43b',
                     tabBarIcon: ({color,focused}) => (

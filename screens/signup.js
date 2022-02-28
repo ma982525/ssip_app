@@ -53,10 +53,8 @@ const Signup = ({navigation}) => {
         const user = userCredential.user;
         try {
 
-          const ref = doc(firestore,user.uid,"user" ); 
-          const ref1 = doc(firestore,user.uid,"user1" );
-          setDoc(ref, {name : YourName});
-          setDoc(ref1, {name : YourName});
+          const ref = doc(firestore,user.uid,"user" );
+          setDoc( ref , {name : YourName} );
           
         } catch (e) {
           console.error("Error adding document: ", e);

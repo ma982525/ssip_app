@@ -12,7 +12,7 @@ import {addDoc, collection,doc, setDoc} from "firebase/firestore"
 const AddRoomPage = () => {
   const navigation=useNavigation();
 
-  const [Room, onChangeText] = React.useState();
+  const [Room, onChangeText] = useState();
   const user = authicaton.currentUser;
   const name = user.displayName;
   const uid = user.uid;
@@ -41,6 +41,10 @@ const AddRoomPage = () => {
       { marginLeft: 20 },
       { marginRight: 20 }]} >
         <TouchableOpacity onPress={() => {
+          const ref = doc(collection(firestore, uid + '/' + 'user'+ '/' + "Room" ),Room);
+          setDoc(ref,{
+            RoomName : Room
+          });
           navigation.navigate("AddApp",{ RoomName : Room })}}>
           <Text style={styles.TextOfButtonInner2}>
             SUBMIT

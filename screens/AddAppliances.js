@@ -15,8 +15,6 @@ const saveData = () => {
 
 const AddAppliances = () => {
 
-
-
   const navigation = useNavigation();
   const route = useRoute();
   const RoomName = route.params.RoomName;
@@ -31,8 +29,9 @@ const AddAppliances = () => {
   const [ApplianceCategory, setApplianceCategory] = useState(null);
 
   const AddRoomDataBase = () => {
-    const ref = doc(collection(firestore, uid + '/' + 'user'+ '/' + RoomName),ApplianceName);
+    const ref = doc(collection(firestore, uid + '/' + 'user'+ '/' + "Room"+'/'+ RoomName+'/'+"Appliance"),ApplianceName);
     setDoc(ref,{
+      ApplianceName : ApplianceName,
       ApplianceID : ApplianceID,
       ApplianceKey : ApplianceKey,
       ApplianceCategory : ApplianceCategory

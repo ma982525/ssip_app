@@ -54,6 +54,7 @@ const Login = ({ props, navigation }) => {
         signInWithEmailAndPassword(authicaton, userEmail, password)
         .then((userCredential) => 
         {
+          console.log("hllo");
           const user = userCredential.user;
           nav.replace("home");
         })

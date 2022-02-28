@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, Alert } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SettingButton } from "../components/SettingButton";
@@ -7,26 +7,27 @@ import COLORS from "../const/colors";
 import styles from "../const/styles";
 import { LogoutButton } from "../components/LogoutButton";
 import { useNavigation, StackActions } from "@react-navigation/native";
-import {deleteUser,} from "firebase/auth"
-import {deleteDoc,doc,collection, getDoc} from "firebase/firestore"
-import { authicaton, database , firestore } from "../const/firebase";
+import { deleteUser } from "firebase/auth"
+import { collection, query, onSnapshot, getDocs, doc, where, deleteDoc } from "firebase/firestore"
+import { authicaton, database, firestore } from "../const/firebase";
 import {
-  EmailAuthCredential,
   EmailAuthProvider,
   reauthenticateWithCredential,
   signOut,
   updatePassword,
 } from "firebase/auth";
-
 import { AlertBox, fire } from "react-native-alertbox";
 
 
 export default function SettingScreen() {
 
+  const [data,setdata]=useState();
   const user = authicaton.currentUser;
   const name = user.displayName;
   const uid = user.uid;
   const nav = useNavigation();
+
+
 
   const deleteuser = () => {
     Alert.alert("delete User", "Are you Want to delete", [
@@ -37,9 +38,9 @@ export default function SettingScreen() {
       {
         text: "OK",
         onPress: () => {
-          
+
           deleteUser(user).then(() => {
-            
+
             const resetAction = StackActions.replace("Auth");
             nav.dispatch(resetAction);
           });
@@ -68,6 +69,17 @@ export default function SettingScreen() {
     ]);
   };
 
+  const getdata = () => {
+    const val = [];
+    const ref = getDocs(collection(firestore, uid + '/user/Room/')).then((snapshot) => {
+      snapshot.forEach( item => {
+          val.push(item.data());
+      })
+    })
+  }
+
+  
+
   const resetpassword = () => {
     return fire({
       title: "Update Password",
@@ -90,7 +102,7 @@ export default function SettingScreen() {
                 nav.dispatch(resetAction);
               });
             });
-          }, // It is an object that holds fields data
+          },
         },
       ],
       fields: [
@@ -105,7 +117,7 @@ export default function SettingScreen() {
       ],
     });
   };
-  
+
   return (
     <View style={styles.settingMainScreen}>
       <AlertBox />
@@ -115,6 +127,9 @@ export default function SettingScreen() {
           buttonTitle="Edit Details"
           btnType="account-edit"
           btnColor={COLORS.theme}
+          onPress={() => {
+            getdata();
+          }}
         />
         <SettingButton
           buttonTitle="Edit Password"

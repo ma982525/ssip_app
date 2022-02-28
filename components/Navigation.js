@@ -11,7 +11,20 @@ import AddRoomsScreen from '../screens/AddRoom';
 import { Text,StyleSheet,View} from 'react-native';
 import ApplianceInner from "../screens/ApplianceInnerScreen"
 import AddRoomPage from '../screens/AddRoomPage';
+import ApplincesList from '../screens/ApplincesList';
 
+const Ap = createStackNavigator();
+
+const innerNavi = () =>{
+  return(
+    < Ap.Navigator initialRouteName='RoomList'>
+    < Ap.Screen name="RoomList" component={ RoomsScreen }  options={{headerShown: false}} />
+      < Ap.Screen name="ApList" component={ ApplincesList }  options={{headerShown: false}} />
+      < Ap.Screen name="AppInner" component={ ApplianceInner } options={{headerShown: false}} />
+    </ Ap.Navigator>
+  )
+
+}
 
 const Ar = createStackNavigator();
 
@@ -79,7 +92,7 @@ const Tabs = () => {
 
             <Tab.Screen
                 name="Rooms"
-                component={ RoomsScreen }
+                component={ innerNavi }
                 options={{
                     tabBarColor: '#ffd43b',
                     title:'All Rooms',

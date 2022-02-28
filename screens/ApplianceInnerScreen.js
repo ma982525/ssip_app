@@ -36,7 +36,7 @@ const factValue = (() => {
 
  const ApplianceInner = () => {
     const route=useRoute();
-    const id1 = route.params.bt;
+    const id1 = route.params.ApName;
     const [isEnabled, setIsEnabled] = useState(factValue());
     
     // const interval= ( )  =>{

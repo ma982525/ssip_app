@@ -7,8 +7,17 @@ import COLORS from "../const/colors";
 import styles from "../const/styles";
 import { LogoutButton } from "../components/LogoutButton";
 import { useNavigation, StackActions } from "@react-navigation/native";
-import { deleteUser } from "firebase/auth"
-import { collection, query, onSnapshot, getDocs, doc, where, deleteDoc } from "firebase/firestore"
+import { deleteUser } from "firebase/auth";
+import {
+  collection,
+  query,
+  onSnapshot,
+  getDocs,
+  doc,
+  where,
+  deleteDoc,
+  deleteField,
+} from "firebase/firestore";
 import { authicaton, database, firestore } from "../const/firebase";
 import {
   EmailAuthProvider,
@@ -18,16 +27,12 @@ import {
 } from "firebase/auth";
 import { AlertBox, fire } from "react-native-alertbox";
 
-
 export default function SettingScreen() {
-
-  const [data,setdata]=useState();
+  const [data, setdata] = useState();
   const user = authicaton.currentUser;
   const name = user.displayName;
   const uid = user.uid;
   const nav = useNavigation();
-
-
 
   const deleteuser = () => {
     Alert.alert("delete User", "Are you Want to delete", [
@@ -38,9 +43,7 @@ export default function SettingScreen() {
       {
         text: "OK",
         onPress: () => {
-
           deleteUser(user).then(() => {
-
             const resetAction = StackActions.replace("Auth");
             nav.dispatch(resetAction);
           });
@@ -50,7 +53,6 @@ export default function SettingScreen() {
   };
 
   const logout = () => {
-
     Alert.alert("Logout", "Are you Want to log out", [
       {
         text: "Cancel",
@@ -60,7 +62,6 @@ export default function SettingScreen() {
         text: "OK",
         onPress: () => {
           signOut(authicaton).then(() => {
-
             const resetAction = StackActions.replace("Auth");
             nav.dispatch(resetAction);
           });
@@ -70,15 +71,7 @@ export default function SettingScreen() {
   };
 
   const getdata = () => {
-    const val = [];
-    const ref = getDocs(collection(firestore, uid + '/user/Room/')).then((snapshot) => {
-      snapshot.forEach( item => {
-          val.push(item.data());
-      })
-    })
-  }
-
-  
+  };
 
   const resetpassword = () => {
     return fire({

@@ -14,7 +14,6 @@ import Signup from './screens/signup';
 const Stack=createStackNavigator();
 
 const Auth = () => {
-  // Stack Navigator for Login and Sign up Screen
   return (<>
     <StatusBar backgroundColor={COLORS.white} barStyle='dark-content'/>
     <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown:false}}>

@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import {
   ScrollView,
+  View,
   ActivityIndicator,
+  FlatList
 } from "react-native";
 import { ListComponentsButton } from "../components/ListComponentsButton.js";
 import styles from "../const/styles";
@@ -41,22 +43,26 @@ export default function RoomsScreen() {
   }
 
   return (
-    <ScrollView style={({ flex: 1 }, { backgroundColor: COLORS.white })}>
-      <AddHeaderButton text="All Room" />
-      <ScrollView style={styles.SettingStyle}>
-        {RoomValue.map((data) => {
-          return (
-            <ListComponentsButton
-              buttonTitle={data.RoomName}
-              btnType="bed"
-              btnColor={COLORS.theme}
-              onPress={()=>{
-                nav.navigate("ApList",{ RoomName1 : data.RoomName })
-              }}
-            />
-          );
-        })}
-      </ScrollView>
-    </ScrollView>
+    <View style={
+      { flex: 1 },
+      { backgroundColor: COLORS.white }}>
+        
+    <FlatList
+      data={RoomValue}
+      ListHeaderComponent={() => (
+        <AddHeaderButton text="All Room" />
+      )}
+      renderItem={({item}) => (
+        <ListComponentsButton
+          buttonTitle={item.RoomName}
+          btnType="bed"
+          btnColor={COLORS.theme}
+          onPress={()=>{
+            nav.navigate("ApList",{ RoomName1 : item.RoomName })}}
+        />
+      )}
+      keyExtractor={item => item.RoomName}/>
+      
+      </View>
   );
 }

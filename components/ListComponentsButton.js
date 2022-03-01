@@ -37,7 +37,7 @@ const ListComponentsButton = ({
 };
 const sty=StyleSheet.create({
     rt: {
-      
+        marginLeft: windowWidth / 20 ,
         backgroundColor:COLORS.theme,
        alignContent:"center",
         borderRadius: 8,

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import {
-  ScrollView,
+  View,
   ActivityIndicator,
+  FlatList
 } from "react-native";
 import { ListComponentsButton } from "../components/ListComponentsButton.js";
-import styles from "../const/styles";
 import COLORS from "../const/colors";
 import AddBackHeaderButton from "../components/AddBackHeaderButton";
 import { collection, getDocs, query } from "firebase/firestore";
@@ -22,6 +22,8 @@ export default function ApplincesList() {
   const nav = useNavigation();
   const route=useRoute();
   const RoomName= route.params.RoomName1;
+
+
   useEffect(async () => {
     const unsubscribe = nav.addListener("focus", async () => {
       const val = [];
@@ -33,9 +35,6 @@ export default function ApplincesList() {
         }
       );
       setApplianceValue(val);
-      ApplianceValue.forEach((dota)=>{
-          console.log(dota);
-      })
       setLoading(false);
     });
     return unsubscribe;
@@ -46,27 +45,31 @@ export default function ApplincesList() {
   }
 
   return (
-    <ScrollView style={({ flex: 1 }, { backgroundColor: COLORS.white })}>
-        <AddBackHeaderButton text="All Appliance" />
-      <ScrollView style={styles.SettingStyle}>
-        {ApplianceValue.map((data) => {
-          return (
-            <ListComponentsButton
-              buttonTitle={data.ApplianceName}
+    <View style={
+      { flex: 1 },
+      { backgroundColor: COLORS.white }}>
+        
+    <FlatList
+      data={ApplianceValue}
+      ListHeaderComponent={() => (
+        < AddBackHeaderButton text="All Room" />
+      )}
+      renderItem={({item}) => (
+        <ListComponentsButton
+              buttonTitle={item.ApplianceName}
               btnType="bed"
               btnColor={COLORS.theme}
               onPress={()=>{
                 nav.navigate("AppInner",{ 
-                    ApName : data.ApplianceName, 
-                    ApId: data.ApplianceName ,
-                    ApKey : data.ApplianceKey,
-                    ApCd : data.ApplianceCategory
+                    ApName : item.ApplianceName, 
+                    ApId: item.ApplianceName ,
+                    ApKey : item.ApplianceKey,
+                    ApCd : item.ApplianceCategory
                 })
               }}
             />
-          );
-        })}
-      </ScrollView>
-    </ScrollView>
+      )}
+      keyExtractor={item => item.RoomName}/>
+      </View>
   );
 }

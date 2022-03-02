@@ -69,7 +69,7 @@ export default function ApplincesList() {
               }}
             />
       )}
-      keyExtractor={item => item.RoomName}/>
+      keyExtractor={item => item.ApplianceKey}/>
       </View>
   );
 }

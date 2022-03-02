@@ -2,10 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   ScrollView,
-  StyleSheet,
-  TouchableOpacity,
   Text,
-  TextInput,
   KeyboardAvoidingView,
   Dimensions,
 } from "react-native";
@@ -13,17 +10,12 @@ import { PieChart, ProgressChart } from "react-native-chart-kit";
 import AddBackHeaderButton from "../components/AddBackHeaderButton";
 import styles from "../const/styles";
 import COLORS from "../const/colors";
-import { Switch } from "react-native-gesture-handler";
-import {
-  update,
-  ref,
-  getDatabase,
-  onValue,
-  DataSnapshot,
-  set,
-} from "firebase/database";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
+import { ref, onValue } from "firebase/database";
 import { database } from "../const/firebase";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { SwitchOfNoOff } from "../components/SwitchOfNoOff";
+import { windowHeight, windowWidth } from "../const/Dimensions";
 
 const chartConfig = {
   backgroundGradientFrom: "#fff",
@@ -31,9 +23,9 @@ const chartConfig = {
   backgroundGradientTo: "#fff",
   backgroundGradientToOpacity: 0,
   color: (opacity = 1) => `rgba(101, 88, 245, ${opacity})`,
-  strokeWidth: 2, // optional, default 3
+  strokeWidth: 2,
   barPercentage: 0.5,
-  useShadowColorFromDataset: false, // optional
+  useShadowColorFromDataset: false,
 };
 
 const ApplianceInner = () => {
@@ -41,40 +33,26 @@ const ApplianceInner = () => {
   const id1 = route.params.ApName;
   const key = route.params.ApKey;
   const nav = useNavigation();
+  const [lastVoltage, setlastVoltage] = useState(0);
   const [Voltage, setVoltage] = useState([]);
 
   useEffect(async () => {
-    onValue(ref(database, "/" + key), (snapshot) => {
+    onValue(ref(database, "/" + key + '/Current'), (snapshot) => {
       const val = [];
       snapshot.forEach((va) => {
-        val.push(va.val());
+        if(va.val()<50)
+        {
+          val.push(0);
+        }
+        else
+        {
+          val.push(va.val());
+        }
       });
-      val.pop();
+      setlastVoltage(val[val.length - 1]);
       setVoltage(val);
     });
-    Voltage.forEach((val) => {
-      console.log(val);
-    });
   }, []);
-
-  const factValue = () => {};
-
-  const [isEnabled, setIsEnabled] = useState();
-  const toggleSwitch = () => {
-    setIsEnabled((previousState) => !previousState);
-  };
-
-  useEffect(async () => {
-    let value;
-    onValue(ref(database, "/" + key + "/Data1"), (snapshot) => {
-      value = snapshot.val();
-      if (value == 1) {
-        setIsEnabled(true);
-      } else {
-        setIsEnabled(false);
-      }
-    });
-  }, [setIsEnabled]);
 
   const data = [
     {
@@ -99,7 +77,6 @@ const ApplianceInner = () => {
         style={{ flex: 1, height: "100%", width: "100%", marginBottom: 80 }}
       >
         <AddBackHeaderButton text={id1} />
-
         <PieChart
           data={data}
           width={Dimensions.get("window").width}
@@ -112,36 +89,27 @@ const ApplianceInner = () => {
         />
         <View
           style={{
-            backgroundColor: COLORS.theme,
-            margin: 20,
-            borderRadius: 10,
-            display: "flex",
+            flex: 1,
             flexDirection: "row",
+            alignContent: "center",
           }}
         >
-          <View
-            style={{ width: "80%", justifyContent: "center", paddingLeft: 20 }}
-          >
-            <Text style={{ color: COLORS.white }}>Working Status</Text>
-          </View>
-          <View style={{ width: "20%" }}>
-            <Switch
-              trackColor={{ false: COLORS.red, true: COLORS.greens }}
-              thumbColor="#f4f3f4"
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={() => {
-                toggleSwitch(),
-                  isEnabled
-                    ? update(ref(database, "/" + key), { Data1: 0 })
-                    : update(ref(database, "/" + key), { Data1: 1 });
-              }}
-              value={isEnabled}
-            />
-          </View>
+          <AnimatedCircularProgress
+            size={180}
+            width={30}
+            fill={lastVoltage}
+            tintColor="#00e0ff"
+            backgroundColor="#3d5875"
+            padding={10}
+            arcSweepAngle={247}
+            rotation={237}
+            duration={4000}
+            tintTransparency={true}
+          />
+          <Text style={[{marginTop:windowHeight/10},{marginHorizontal:windowWidth/10}]}>Power:{lastVoltage}</Text>
         </View>
-        {Voltage.map((dat) => {
-          return <Text style={styles.TextInput}>{dat}</Text>;
-        })}
+        
+        <SwitchOfNoOff pathOfSwitchData={"/" + key} />
       </KeyboardAvoidingView>
     </ScrollView>
   );

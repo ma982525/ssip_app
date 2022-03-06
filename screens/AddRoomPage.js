@@ -19,9 +19,9 @@ const AddRoomPage = () => {
     
   
   return (
-    <ScrollView style={
+    <ScrollView style={[
       { flex: 1 },
-      { backgroundColor: COLORS.white }}
+      { backgroundColor: COLORS.white }]}
     >
       <AddHeaderButton text={"ADD ROOM"} />
       <View style={[styles.marginsetOfTextConatiner, { paddingTop: 90 }]}>

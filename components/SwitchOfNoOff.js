@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import {View,Text} from "react-native";
 import COLORS from "../const/colors";
 import { Switch } from "react-native-gesture-handler";
-import {update,ref,onValue} from "firebase/database";
+import {update,ref,onValue,set} from "firebase/database";
 import { database } from "../const/firebase";
+
 
 export const SwitchOfNoOff = ({
     pathOfSwitchData,
@@ -14,7 +15,9 @@ export const SwitchOfNoOff = ({
     setIsEnabled((previousState) => !previousState);
   };
   useEffect(async () => {
+
     let value;
+    
     onValue(ref(database,  pathOfSwitchData + "/data"+"/Data1"), (snapshot) => {
       value = snapshot.val();
       if (value == 1) {
@@ -24,6 +27,29 @@ export const SwitchOfNoOff = ({
       }
     });
   }, [setIsEnabled]);
+
+  const getUpdate=()=>{
+    let val;
+    onValue(ref(database,  pathOfSwitchData + "/Time"+"/second"), (snapshot) => {
+      val = snapshot.val();
+      if(isEnabled)
+      {
+          set(ref(database,  pathOfSwitchData + "/Time"),
+          {
+            "second" : ( val - 3) 
+          })
+      }
+      else
+      {
+        set(ref(database,  pathOfSwitchData + "/Time"),
+          {
+            "second" : ( val + 3) 
+          })
+      }
+    },{
+      onlyOnce: true
+    });
+  }
 
   return (
     <View
@@ -48,6 +74,7 @@ export const SwitchOfNoOff = ({
               isEnabled
                 ? update(ref(database, pathOfSwitchData + "/data"), { Data1: 0 })
                 : update(ref(database, pathOfSwitchData + "/data" ), { Data1: 1 });
+              getUpdate();
           }}
           value={isEnabled}
         />

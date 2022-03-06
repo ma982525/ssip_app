@@ -45,9 +45,9 @@ export default function ApplincesList() {
   }
 
   return (
-    <View style={
+    <View style={[
       { flex: 1 },
-      { backgroundColor: COLORS.white }}>
+      { backgroundColor: COLORS.white }]}>
         
     <FlatList
       data={ApplianceValue}

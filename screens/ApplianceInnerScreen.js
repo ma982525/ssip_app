@@ -16,6 +16,7 @@ import { database } from "../const/firebase";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SwitchOfNoOff } from "../components/SwitchOfNoOff";
 import { windowHeight, windowWidth } from "../const/Dimensions";
+import { Totaltime } from "../components/TotalTime";
 
 const chartConfig = {
   backgroundGradientFrom: "#fff",
@@ -33,8 +34,8 @@ const ApplianceInner = () => {
   const id1 = route.params.ApName;
   const key = route.params.ApKey;
   const nav = useNavigation();
-  const [lastVoltage, setlastVoltage] = useState(0);
-  const [Voltage, setVoltage] = useState([]);
+  const [lastPower, setlastPower] = useState(0);
+  const [Power, setPower] = useState([]);
 
   useEffect(async () => {
     onValue(ref(database, "/" + key + '/Current'), (snapshot) => {
@@ -49,8 +50,8 @@ const ApplianceInner = () => {
           val.push(va.val());
         }
       });
-      setlastVoltage(val[val.length - 1]);
-      setVoltage(val);
+      setlastPower(val[val.length - 1]);
+      setPower(val);
     });
   }, []);
 
@@ -77,6 +78,7 @@ const ApplianceInner = () => {
         style={{ flex: 1, height: "100%", width: "100%", marginBottom: 80 }}
       >
         <AddBackHeaderButton text={id1} />
+        <Totaltime pathOfSwitchData={"/" + key} />
         <PieChart
           data={data}
           width={Dimensions.get("window").width}
@@ -97,7 +99,7 @@ const ApplianceInner = () => {
           <AnimatedCircularProgress
             size={180}
             width={30}
-            fill={lastVoltage}
+            fill={lastPower}
             tintColor="#00e0ff"
             backgroundColor="#3d5875"
             padding={10}
@@ -106,7 +108,7 @@ const ApplianceInner = () => {
             duration={4000}
             tintTransparency={true}
           />
-          <Text style={[{marginTop:windowHeight/10},{marginHorizontal:windowWidth/10}]}>Power:{lastVoltage}</Text>
+          <Text style={[{marginTop:windowHeight/10},{marginHorizontal:windowWidth/10}]}>Power:{lastPower}</Text>
         </View>
         
         <SwitchOfNoOff pathOfSwitchData={"/" + key} />

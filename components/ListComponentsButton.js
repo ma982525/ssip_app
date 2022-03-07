@@ -1,26 +1,28 @@
-
-
+import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {Text, TouchableOpacity,StyleSheet, View} from 'react-native';
 import styles from '../const/styles'
 import COLORS from '../const/colors'
 import FontAwesome from 'react-native-vector-icons/MaterialCommunityIcons';
 import { windowWidth } from '../const/Dimensions';
+import { ApplincesList } from '../screens/ApplincesList';
+import ApplianceInner from '../screens/ApplianceInnerScreen';
+
 
 
 const ListComponentsButton = ({
   buttonTitle,
   btnType,
   btnColor,
-  link,
-  navigation,
+  onPress,
 }) => {
+  const nav= useNavigation();
   return ( 
   <View>
     <TouchableOpacity
-      style={[sty.rt,{backgroundColor: btnColor}]} 
-      
-      onPress={()=>navigation.navigate(link,{title:buttonTitle})}
+      style={[sty.rt,{backgroundColor: btnColor}]}      
+      onPress={onPress}
       >
         
       <View style={sty.btnTxtWrapper}>

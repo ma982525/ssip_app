@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { Text,View,TouchableOpacity, Alert,StyleSheet,ActivityIndicator} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SettingButton } from '../components/SettingButton';
@@ -6,9 +6,21 @@ import COLORS from "../const/colors"
 import styles from "../const/styles"
 import FontAwesome from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LogoutButton } from '../components/LogoutButton';
-import {deleteDoc,doc,collection, getDoc} from "firebase/firestore"
 import { useNavigation, StackActions } from "@react-navigation/native"
-import { authicaton, database , firestore } from "../const/firebase";
+
+import {
+  collection,
+  query,
+  onSnapshot,
+  getDocs,
+  doc,
+  where,
+  deleteDoc,
+  deleteField,
+} from "firebase/firestore";
+import { authicaton, database, firestore } from "../const/firebase";
+
+
 import {
   EmailAuthCredential,
   EmailAuthProvider,
@@ -24,7 +36,8 @@ import {AlertBox,fire} from "react-native-alertbox";
 export default function SettingScreen({navigation}) {
 
   
-  const [animating,setanimating] = useState('false');
+  const [animating,setanimating] = useState('false');  
+  const [data, setdata] = useState();
   const user = authicaton.currentUser;
   const name = user.displayName;
   const uid = user.uid;
@@ -150,7 +163,7 @@ export default function SettingScreen({navigation}) {
 
 
   return (<>
-    <View style={(animating=='false')?sty.containerhide:sty.container}>
+    <View style={(animating=='false')?sty.containerhide:sty.container2}>
         <ActivityIndicator
           animating={(animating=='false')?false:true}
           color="rgba(101, 88, 245, 1)"

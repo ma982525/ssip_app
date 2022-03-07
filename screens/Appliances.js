@@ -7,6 +7,7 @@ import AddHeaderButton from '../components/AddHeaderButton';
 import { createStackNavigator } from '@react-navigation/stack';
 import RoomsScreen from '../screens/Rooms';
 import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 // const stack = createStackNavigator();
 // const AppNav = () =>{
@@ -18,7 +19,8 @@ import { NavigationContainer } from '@react-navigation/native';
     
 // }
 
-export default function ProductScreen({navigation}) {
+export default function ProductScreen() {
+  const navigation= useNavigation();
   return (
     <ScrollView style={
       { flex: 1 },
@@ -30,31 +32,24 @@ export default function ProductScreen({navigation}) {
           buttonTitle="SYSKA LED 15W"
           btnType="lightbulb-outline"
           btnColor={COLORS.theme}
-          navigation={navigation}
-          link={"InnerProduct"}
+          onPress ={ ()  => { navigation.navigate("InnerProduct",{ ApName: "SYSKA LED" })}}
         />
         <ListComponentsButton
           buttonTitle="FAN"
           btnType="fan"
-          btnColor={COLORS.theme}          
-          navigation={navigation}
-          link={"InnerProduct"}
+          btnColor={COLORS.theme}
         />
 
         <ListComponentsButton
           buttonTitle="Air Condition"
           btnType="air-conditioner"
           btnColor={COLORS.theme}
-          navigation={navigation}
-          link={"InnerProduct"}
         />
 
         <ListComponentsButton
           buttonTitle="SYSKA LED 15W"
           btnType="lightbulb-outline"
           btnColor={COLORS.theme}
-          navigation={navigation}
-          link={"InnerProduct"}
         />
       </ScrollView>
     </ScrollView>

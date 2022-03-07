@@ -2,41 +2,97 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import styles from "../const/styles";
 import SocialButton from '../components/SocialButton'
+import { ActivityIndicator } from "react-native-paper";
 import {
   Text,
   View,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
-  ScrollView
+  ScrollView,
+  StyleSheet
 } from "react-native";
 import { windowHeight, windowWidth } from "../const/Dimensions";
-import Tabs from "../components/Navigation";
+import { authicaton } from "../const/firebase";
+import { signInWithEmailAndPassword , signInWithPopup , GoogleAuthProvider} from "firebase/auth";
+import COLORS from "../const/colors";
 
 const Login = ({ props, navigation }) => {
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");  
   const [errortext, setErrortext] = useState('');
+  const [animating,setanimating] = useState('false');
 
+  const fbLogin =()=>{
+    console.log("fb");
+  }
+  const googleLogin =()=>{
+    console.log("googleLogin");
+  }
   const handleSubmitPress = () => {
+    setanimating('true');
     setErrortext('');
     if (!userEmail) {
+      setanimating('false');
       alert('Please Enter Your Email');
       return;
     }
     if (!password) {
+      setanimating('false');
       alert('Please Enter Your Password');
       return;
     }
-    navigation.replace('Home');
+    if (userEmail != "\0" && password != "\0") 
+    {
+      
+      signInWithEmailAndPassword(authicaton, userEmail, password)
+        .then((userCredential) => 
+        {
+          const user = userCredential.user;
+          user.displayName=user.displayName;
+          setanimating('false');
+          navigation.replace("Home");
+        })
+        .catch((error) => 
+        {
+          
+          if (error.code === "auth/email-already-in-use") 
+          {
+            setanimating('false'); 
+            alert("Your Email ID Already IN Use");
+          }
+          else if (error.code === "auth/user-not-found") 
+          {
+            setanimating('false');
+            alert("User Not Found!");
+          }
+          else if (error.code === "auth/wrong-password") 
+          {
+            setanimating('false');
+            alert("Enter Correct Password!");
+          }
+          else
+          {
+            alert(error);
+            setanimating('false');
+          }
+        });
+    }
+
   }
 
   return (
-
+<>
+    <View style = {(animating=='false')?sty.containerhide:sty.container}>
+        <ActivityIndicator
+               animating = {(animating=='false')?false:true}
+               color = "rgba(101, 88, 245, 1)"
+               size = "large"
+               style = {sty.activityIndicator}/>
+      </View>
 
     <ScrollView>
-      <KeyboardAvoidingView style={{ flex: 1, alignItems: 'center', height: '100%', marginTop: windowHeight / 6 }}>
-        
+      <KeyboardAvoidingView style={{ flex: 1, alignItems: 'center', height: '100%', marginTop: windowHeight / 6 }}>      
         <Text style={styles.TextView}>Login</Text>
         
 
@@ -102,7 +158,31 @@ const Login = ({ props, navigation }) => {
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </ScrollView>
-
+    </>
   );
 }
+
+const sty = StyleSheet.create ({
+  container: {
+     flex: 1,
+     display:'flex',
+     justifyContent: 'center',
+     alignItems: 'center',
+     height:'100%',
+     width:'100%',
+     zIndex:10,
+     position:'absolute',
+     backgroundColor:'rgba(255,255,255,0.8)'
+  },
+  containerhide: {
+    display:'none'
+ },
+  activityIndicator: {
+     flex: 1,
+     justifyContent: 'center',
+     alignItems: 'center',
+     height: 80
+  }
+})
+
 export default Login

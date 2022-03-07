@@ -9,13 +9,39 @@ import SettingScreen from '../screens/Settings';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddRoomsScreen from '../screens/AddRoom';
 import { Text,StyleSheet,View} from 'react-native';
+import ApplianceInner from '../screens/ApplianceInnerScreen';
+import AddRoomPage from '../screens/AddRoomPage';
+import ApplincesList from '../screens/ApplincesList';
+
+const Appstack = createStackNavigator();
+const AppNav = () =>{
+  return(
+    < Appstack.Navigator>
+      <Appstack.Screen name="AllProduct" component={ ProductScreen }  options={{headerShown: false}}/>
+      <Appstack.Screen name="InnerProduct" component={ ApplianceInner }  options={{headerShown: false}}/>
+    </ Appstack.Navigator>
+  )
+    
+}
+const Ap = createStackNavigator();
+
+const innerNavi = () =>{
+  return(
+    < Ap.Navigator initialRouteName='RoomList'>
+    < Ap.Screen name="RoomList" component={ RoomsScreen }  options={{headerShown: false}} />
+      < Ap.Screen name="ApList" component={ ApplincesList }  options={{headerShown: false}} />
+      < Ap.Screen name="AppInner" component={ ApplianceInner } options={{headerShown: false}} />
+    </ Ap.Navigator>
+  )
+
+}
 
 const Ar = createStackNavigator();
 
 const RoomNav = () =>{
   return(
     < Ar.Navigator initialRouteName='AddRoom'>
-      < Ar.Screen name="AddRoom" component={ RoomsScreen }  options={{headerShown: false}}/>
+      < Ar.Screen name="AddRoom" component={ AddRoomPage }  options={{headerShown: false}}/>
       < Ar.Screen name="AddApp" component={ AddAppliancesPage } options={{headerShown: false}}/>
     </ Ar.Navigator>
   )
@@ -34,7 +60,7 @@ const Tabs = () => {
                 "tabBarStyle":{
                     "position":'absolute',
                     "backgroundColor":'#301A4B',
-                    "bottom":25,
+                    "bottom":20,
                     "left":20,
                     "right":20,
                     "elevation":0,
@@ -63,7 +89,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Rooms"
-                component={RoomNav}
+                component={innerNavi}
                 options={{
                     tabBarColor: '#ffd43b',
                     title:'All Rooms',
@@ -79,7 +105,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Add Rooms"
-                component={AddRoomsScreen}
+                component={RoomNav}
                 options={{
                     tabBarColor: '#d02760',
                     tabBarIcon: ({color,focused}) => (
@@ -92,7 +118,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Appliances"
-                component={ProductScreen}
+                component={AppNav}
                 options={{
                     tabBarColor: '#ffd43b',
                     tabBarIcon: ({color,focused}) => (

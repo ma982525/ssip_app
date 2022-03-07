@@ -1,38 +1,41 @@
 import { useState, useEffect } from "react";
 import {
-  ScrollView,
   View,
   ActivityIndicator,
-  FlatList
+  FlatList,
+  ScrollView
 } from "react-native";
 import { ListComponentsButton } from "../components/ListComponentsButton.js";
-import styles from "../const/styles";
 import COLORS from "../const/colors";
-import AddHeaderButton from "../components/AddHeaderButton";
+import AddBackHeaderButton from "../components/AddBackHeaderButton";
 import { collection, getDocs, query } from "firebase/firestore";
 import { authicaton, firestore } from "../const/firebase";
 import { useNavigation } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 
-export default function RoomsScreen() {
-  const [RoomValue, setRoomValue] = useState([]);
+export default function ApplincesList() {
+  const [ApplianceValue, setApplianceValue] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
   const user = authicaton.currentUser;
   const uid = user.uid;
   const nav = useNavigation();
+  const route = useRoute();
+  const RoomName = route.params.RoomName1;
+
 
   useEffect(async () => {
     const unsubscribe = nav.addListener("focus", async () => {
       const val = [];
-      await getDocs(query(collection(firestore, uid + "/user/Room/"))).then(
+      await getDocs(query(collection(firestore, uid + "/user/Room/" + RoomName + '/Appliance/'))).then(
         async (snapshot) => {
           snapshot.forEach((item) => {
             val.push(item.data());
           });
         }
       );
-      setRoomValue(val);
+      setApplianceValue(val);
       setLoading(false);
     });
     return unsubscribe;
@@ -45,24 +48,29 @@ export default function RoomsScreen() {
   return (
     <>
       <View style={{ flex: 1 }}>
-        <AddHeaderButton text="All Room" />
+        <AddBackHeaderButton text={RoomName} />
       </View>
-
       <View style={{ flex: 10, justifyContent: 'flex-start', backgroundColor: COLORS.white }}>
         <FlatList
-          data={RoomValue}
-          style={{left:20}}
+          data={ApplianceValue}
+          style={{ left: 22 }}
           renderItem={({ item }) => (
             <ListComponentsButton
-              buttonTitle={item.RoomName}
+              buttonTitle={item.ApplianceName}
               btnType="bed"
               btnColor={COLORS.theme}
               onPress={() => {
-                nav.navigate("ApList", { RoomName1: item.RoomName })
+                nav.navigate("AppInner", {
+                  ApName: item.ApplianceName,
+                  ApId: item.ApplianceName,
+                  ApKey: item.ApplianceKey,
+                  ApCd: item.ApplianceCategory
+                })
               }}
             />
           )}
-          keyExtractor={item => item.RoomName} />
+          keyExtractor={item => item.ApplianceKey}
+        />
       </View>
     </>
   );

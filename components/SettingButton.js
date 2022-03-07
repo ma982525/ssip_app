@@ -8,11 +8,13 @@ const SettingButton = ({
   buttonTitle,
   btnType,
   btnColor,
+  onPress,
   ...rest
 }) => {
   return (
   <View styles={{alignContent: "center"}}>
     <TouchableOpacity
+      onPress={onPress}
       style={[styles.addNameHeader, {backgroundColor: btnColor},{flex: 1}, {flexDirection: 'row'},{marginTop: 20},{width: "90%"}, {height: 50}]}
       {...rest}>
       <View style={styles.btnTxtWrapper}>

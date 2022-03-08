@@ -1,12 +1,13 @@
-import React from 'react'
-import { ScrollView } from 'react-native-gesture-handler';
-import { ListComponentsButton } from '../components/ListComponentsButton.js';
+
 import COLORS from "../const/colors"
 import styles from "../const/styles"
 import AddHeaderButton from '../components/AddHeaderButton';
-import { createStackNavigator } from '@react-navigation/stack';
-import RoomsScreen from '../screens/Rooms';
-import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation} from '@react-navigation/native';
+import React,{useState} from "react";
+import { View, ScrollView,  TouchableOpacity, Text, TextInput,KeyboardAvoidingView } from "react-native";
+import { firestore,authicaton } from "../const/firebase";
+import {doc,collection,getDocs,query,where} from "firebase/firestore";
+
 
 // const stack = createStackNavigator();
 // const AppNav = () =>{
@@ -18,45 +19,60 @@ import { NavigationContainer } from '@react-navigation/native';
     
 // }
 
-export default function ProductScreen({navigation}) {
+export default function ProductScreen() {
+  const user = authicaton.currentUser;
+  const uid = user.uid;
+  const navigation= useNavigation();
+  const [Room, onChangeText] = useState();
+
+   const getId =() =>{
+     let id;
+     let val=[];
+    const q = query(collection(firestore, "user"+"/"+uid+"/"+"Room"), where("RoomName", "==", Room ));
+    const querySnapshot =  getDocs(q).then(async(querySnapshot)=>{
+      querySnapshot.forEach(async(doc) => {
+       val.push(doc.data())
+      });
+      val.forEach(async(se) =>{
+        id=se.RoomId;
+      })
+      navigation.navigate("AddNewApp",{ RoomId : id });
+    });
+  
+   }
+
   return (
-    <ScrollView style={
+    <ScrollView style={[
       { flex: 1 },
-      { backgroundColor: COLORS.white }}>
+      { backgroundColor: COLORS.white }]}>
 
-      <AddHeaderButton text="All Appliances" />
-      <ScrollView style={styles.SettingStyle}>
-        <ListComponentsButton
-          buttonTitle="SYSKA LED 15W"
-          btnType="lightbulb-outline"
-          btnColor={COLORS.theme}
-          navigation={navigation}
-          link={"InnerProduct"}
-        />
-        <ListComponentsButton
-          buttonTitle="FAN"
-          btnType="fan"
-          btnColor={COLORS.theme}          
-          navigation={navigation}
-          link={"InnerProduct"}
-        />
+      <AddHeaderButton text="Add Appliances" />
+      
+      <View style={[styles.marginsetOfTextConatiner, { paddingTop: 90 }]}>
+        <Text style={{fontSize:20,textAlign:'center'}}>Enter Already exist Room Name</Text>
+        <View style={styles.inputView100}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Enter Room Name"
+            placeholderTextColor="#301A4B"
+            onChangeText={onChangeText}
+            value={Room}
+          />
+        </View>
+      </View>
 
-        <ListComponentsButton
-          buttonTitle="Air Condition"
-          btnType="air-conditioner"
-          btnColor={COLORS.theme}
-          navigation={navigation}
-          link={"InnerProduct"}
-        />
+      <View style={[styles.Submit, { height: 50 },
+      { marginLeft: 20 },
+      { marginRight: 20 }]} >
+        <TouchableOpacity onPress={() => {
+           getId();
+          }}>
+          <Text style={styles.TextOfButtonInner2}>
+            SUBMIT
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-        <ListComponentsButton
-          buttonTitle="SYSKA LED 15W"
-          btnType="lightbulb-outline"
-          btnColor={COLORS.theme}
-          navigation={navigation}
-          link={"InnerProduct"}
-        />
-      </ScrollView>
     </ScrollView>
   );
 }

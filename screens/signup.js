@@ -67,7 +67,6 @@ const Signup = ({navigation}) => {
         }
     
         if (error.code === 'auth/invalid-email') {
-          // console.log('That email address is invalid!');
           setanimating('false');
           alert('This email address is invalid!')
         }

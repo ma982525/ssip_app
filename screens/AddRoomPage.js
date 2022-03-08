@@ -5,15 +5,22 @@ import Textfiled from "../components/Textfiled";
 import COLORS from "../const/colors";
 import styles from "../const/styles";
 import { useNavigation } from '@react-navigation/native';
+import { database , authicaton ,firestore} from "../const/firebase";
+import {addDoc, collection,doc, setDoc} from "firebase/firestore"
+import { useState } from "react";
 
 const AddRoomPage = () => {
 
-  const navigation=useNavigation();
+  const navigation=useNavigation();  
+  const [Room, onChangeText] = useState();
+  const user = authicaton.currentUser;
+  const name = user.displayName;
+  const uid = user.uid;
   
   return (
     <ScrollView style={
-      { flex: 1 },
-      { backgroundColor: COLORS.white }}
+      { flex: 1 ,
+      backgroundColor: COLORS.white }}
     >
       <AddHeaderButton text={"ADD ROOM"} />
       <View style={[styles.marginsetOfTextConatiner, { paddingTop: 90 }]}>
@@ -23,6 +30,8 @@ const AddRoomPage = () => {
             style={styles.TextInput}
             placeholder="Enter Room Name"
             placeholderTextColor="#301A4B"
+            onChangeText={onChangeText}
+            value={Room}
           />
         </View>
       </View>
@@ -30,7 +39,14 @@ const AddRoomPage = () => {
       <View style={[styles.Submit, { height: 50 },
       { marginLeft: 20 },
       { marginRight: 20 }]} >
-        <TouchableOpacity onPress={() => navigation.navigate('AddApp')}>
+        <TouchableOpacity onPress={() => {
+          const id= Math.floor(Math.random() * 1000000000) + 1;
+          const ref = doc(collection(firestore, 'user' + '/' + uid+ '/' + "Room"),id.toString());
+          setDoc(ref,{
+            RoomId : id,
+            RoomName : Room
+          });
+          navigation.navigate("AddApp",{ RoomId : id })}}>
           <Text style={styles.TextOfButtonInner2}>
             SUBMIT
           </Text>

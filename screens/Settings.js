@@ -213,6 +213,28 @@ export default function SettingScreen({ navigation }) {
       ],
     });
 
+    const logout = () => 
+      fire({title: "Logout"  , 
+          message: "Are you sure LogOut ",
+          actions : [
+            {
+              text: "No, don't",
+              style: "cancel",
+            },
+            {
+              text: "Yes, Please",
+              onPress: () => {
+                signOut(authicaton).then(() => {
+                  navigation.replace("Auth");
+                }).catch(error => {
+                  console.log(error);
+                });
+              },
+            },
+          ]
+     })
+    
+
   return (
     <>
       <View style={animating == "false" ? sty.containerhide : sty.container2}>
@@ -256,7 +278,7 @@ export default function SettingScreen({ navigation }) {
           btnType="logout"
           btnColor={COLORS.red}
           mystyle="logout"
-          navigation={navigation}
+          onPress={()=>{logout();}}
         />
       </ScrollView>
     </>

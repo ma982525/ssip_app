@@ -11,7 +11,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import { SettingButton } from "../components/SettingButton";
 import COLORS from "../const/colors";
 import styles from "../const/styles";
-import FontAwesome from "react-native-vector-icons/MaterialCommunityIcons";
 import { LogoutButton } from "../components/LogoutButton";
 import { useNavigation, StackActions } from "@react-navigation/native";
 

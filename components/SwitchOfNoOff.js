@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import {View,Text} from "react-native";
 import COLORS from "../const/colors";
 import { Switch } from "react-native-gesture-handler";
-import {update,ref,onValue,set} from "firebase/database";
+import {update,ref,onValue} from "firebase/database";
 import { database } from "../const/firebase";
+import AddButon from "./AddButton";
 
 export const SwitchOfNoOff = ({
     pathOfSwitchData,
@@ -31,14 +32,14 @@ export const SwitchOfNoOff = ({
       val = snapshot.val();
       if(isEnabled)
       {
-          set(ref(database,  pathOfSwitchData + "/Time"),
+          update(ref(database,  pathOfSwitchData + "/Time"),
           {
             "second" : ( val - 3) 
           })
       }
       else
       {
-        set(ref(database,  pathOfSwitchData + "/Time"),
+        update(ref(database,  pathOfSwitchData + "/Time"),
           {
             "second" : ( val + 3) 
           })
@@ -76,6 +77,8 @@ export const SwitchOfNoOff = ({
           }}
           value={isEnabled}
         />
+        
+        
       </View>
     </View>
   );

@@ -10,7 +10,7 @@ import { database } from '../const/firebase';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SwitchOfNoOff } from "../components/SwitchOfNoOff";
 import { windowHeight, windowWidth } from "../const/Dimensions";
-import { Totaltime } from "../components/TotalTime";
+import { Totaltime, TotalUnit } from "../components/TotalTime";
 import { AlertBox, fire } from "react-native-alertbox";
 import { ListComponentsButton } from "../components/ListComponentsButton";
 import { Card } from "react-native-elements";
@@ -34,7 +34,6 @@ const ApplianceInner = props => {
     const [min, setmin] = useState(0);
     const [sec, setsec] = useState(0);
     const [remansec, setremansec] = useState(0);
-    const [totalsec, settotalsec] = useState(0);
 
     const route = useRoute();
 
@@ -78,14 +77,6 @@ const ApplianceInner = props => {
                 sethr(hro);
                 setmin(mino);
                 setsec(seco);
-            })
-        });
-
-
-        onValue(ref(database, "/" + key + '/Timer'), (snapshot) => {
-            snapshot.forEach(async (data) => {
-                let yu = data.val();
-                settotalsec(yu);
             })
         });
     }, []);
@@ -164,33 +155,36 @@ const ApplianceInner = props => {
     }
 
     const stopTimer =() =>{
-        update(ref(database, "/" + key + "/Timer"), { settimer: 0 }).then(() => {
-            nav.navigate("AppInner", {
-                RoomId: rid,
-                ApName: Name,
-                ApId: apid,
-                ApKey: key,
-                ApCd: apcd
-            })
+        update(ref(database, "/" + key + "/data"), { Data1: 0 }).then(()=>{
+            update(ref(database, "/" + key + "/Timer"), { settimer: 0 }).then(() => {
+                nav.navigate("AppInner", {
+                    RoomId: rid,
+                    ApName: Name,
+                    ApId: apid,
+                    ApKey: key,
+                    ApCd: apcd
+                })
+            }) 
         })
+        
     }
-
+    console.log(parseFloat(hr))
     return (
         <View>
 
             <View style={(timer == true) ? sty.containerhide : sty.container}>
-                <Card borderRadius={20}>
+                <Card borderRadius={20} backgroundColor='rgba(242, 242, 242, 1)'>
                     <Card.Title>Timer</Card.Title>
                     <Card.Divider>
-                        <Text style={styles.TextView}>{hr} hr:{min} min:{sec} second</Text>
+                        <Text style={styles.TextView}>{hr} hr : {min} min : {sec} second</Text>
                         <View>
                             <View style={styles.containerOfAddButton}>
                                 <View style={[styles.buttonAdd,
                                 { marginTop: 20 },
-                                { marginRight: 10 },
+                                { marginRight: 20 },
                                 { width: 200 },
                                 { height: 50 }]} >
-                                    <TouchableOpacity onPress={() =>{stopTimer()}}>
+                                    <TouchableOpacity style={{justifyContent:"center",alignContent : "center",marginLeft : 10}} onPress={() =>{stopTimer()}}>
                                         <Text style={styles.AddPlusText}>Stop Timer</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -240,6 +234,7 @@ const ApplianceInner = props => {
                         />
                         <Text style={[{ marginTop: windowHeight / 10 }, { marginHorizontal: windowWidth / 10 }]}>Power:{lastPower}</Text>
                     </View>
+                    <TotalUnit pathOfSwitchData={"/" + key}/>
                     <SwitchOfNoOff pathOfSwitchData={"/" + key} />
                     <View style={{marginLeft : 30, marginBottom : 50}}>
                     <ListComponentsButton
@@ -248,7 +243,7 @@ const ApplianceInner = props => {
                         btnColor={COLORS.theme}
                         onPress={() => { setTimer() }} />
                     </View>
-
+                  
                 </KeyboardAvoidingView>
             </ScrollView>
         </View>
@@ -265,9 +260,8 @@ const sty = StyleSheet.create({
         width: '100%',
         zIndex: 10,
         position: 'absolute',
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
         borderRadius: 5,
-        paddingVertical : 20
     },
     containerhide: {
         display: 'none'

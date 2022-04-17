@@ -3,10 +3,9 @@ import {
   ScrollView,
   View,
   ActivityIndicator,
-  FlatList
+  FlatList,StyleSheet
 } from "react-native";
 import { ListComponentsButton } from "../components/ListComponentsButton.js";
-import styles from "../const/styles";
 import COLORS from "../const/colors";
 import AddHeaderButton from "../components/AddHeaderButton";
 import { collection, getDocs, query } from "firebase/firestore";
@@ -25,9 +24,10 @@ export default function RoomsScreen() {
   useEffect(async () => {
     const unsubscribe = nav.addListener("focus", async () => {
       const val = [];
-      await getDocs(query(collection(firestore, uid + "/user/Room/"))).then(
+      await getDocs(query(collection(firestore,"user/"+ uid + "/Room"))).then(
         async (snapshot) => {
           snapshot.forEach((item) => {
+            console.log(item.data())
             val.push(item.data());
           });
         }
@@ -39,7 +39,15 @@ export default function RoomsScreen() {
   }, []);
 
   if (loading) {
-    return <ActivityIndicator />;
+    return (
+      <View style={styles.container2}>
+        <ActivityIndicator
+          animating={true}
+          color="rgba(101, 88, 245, 1)"
+          size="large"
+          style={styles.activityIndicator} />
+      </View>);
+
   }
 
   return (
@@ -57,13 +65,36 @@ export default function RoomsScreen() {
               buttonTitle={item.RoomName}
               btnType="bed"
               btnColor={COLORS.theme}
-              onPress={() => {
-                nav.navigate("ApList", { RoomName1: item.RoomName })
-              }}
+              name={item.RoomName}
+              id={item.RoomId}
+              // onPress={() => {
+              //   nav.navigate("ApList", { RoomName1 : item.RoomName , RoomId : item.RoomId })
+              // }}
             />
           )}
-          keyExtractor={item => item.RoomName} />
+          keyExtractor={item => item.RoomId} />
       </View>
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  container2: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '100%',
+    zIndex: 10,
+    position: 'absolute',
+    backgroundColor: 'rgba(255,255,255,0.8)'
+  },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 80
+  }
+});
+

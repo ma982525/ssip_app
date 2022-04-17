@@ -31,6 +31,7 @@ import {
   deleteUser,
 } from "firebase/auth";
 import {AlertBox,fire} from "react-native-alertbox";
+import { ref } from "firebase/database";
 
 
 export default function SettingScreen({navigation}) {
@@ -65,7 +66,8 @@ export default function SettingScreen({navigation}) {
             }).then(() => {
               setanimating('false');
               reauthenticateWithCredential(user, cred);
-              Alert.alert("Successfully Updated","Your name is successfully changed.");
+              Alert.alert("Successfully Updated",
+              "Your name is successfully changed.");
             }).catch((error) => {
               setanimating('false');
               console.log(error);
@@ -106,12 +108,8 @@ export default function SettingScreen({navigation}) {
             data.Password
           );
           reauthenticateWithCredential(user, crad).then(() => {
-            deleteUser(user).then(() => {
-              nav.replace("Auth");
-            }).catch(e=>{
-                console.log(e);
+            deleteData();
             });
-          });
         }, // It is an object that holds fields data
       },
     ],
@@ -122,6 +120,49 @@ export default function SettingScreen({navigation}) {
       },
     ],
   });
+  const deleteData = () => {
+    const q = query(collection(firestore, "user/" + uid + "/Room"));
+    const val = [];
+    getDocs(q)
+      .then((dw) => {
+        dw.forEach((snap) => {
+          val.push(snap.data());
+        });
+      })
+      .then(() => {
+        val.forEach((snap) => {
+          let id = snap.RoomId.toString();
+          deleteDoc(doc(firestore, "user/" + uid + "/Room/" + id));
+        });
+      })
+      .then(() => {
+        const q1 = query(collection(firestore, "user/" + uid + "/Appliance"));
+        const val1 = [];
+        getDocs(q1)
+          .then((dw) => {
+            dw.forEach((snap) => {
+              val1.push(snap.data());
+            });
+          })
+          .then(() => {
+            val1.forEach((snap) => {
+              let id = snap.ApId.toString();
+              console.log(id);
+              deleteDoc(doc(firestore, "user/" + uid + "/Appliance/" + id));
+            });
+          });
+      })
+      .then(() => {
+        deleteDoc(doc(firestore, "user/" + uid ));
+        deleteUser(user)
+          .then(() => {
+            nav.replace("Auth");
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      });
+    };
 
   const resetpassword = () => fire({
       title: "Update Password",

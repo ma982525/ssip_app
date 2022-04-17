@@ -28,9 +28,9 @@ const Ap = createStackNavigator();
 const innerNavi = () =>{
   return(
     < Ap.Navigator initialRouteName='RoomList'>
-    < Ap.Screen name="RoomList" component={ RoomsScreen }  options={{headerShown: false}} />
-      < Ap.Screen name="ApList" component={ ApplincesList }  options={{headerShown: false}} />
-      < Ap.Screen name="AppInner" component={ ApplianceInner } options={{headerShown: false}} />
+        < Ap.Screen name="RoomList" component={ RoomsScreen }  options={{headerShown: false}} />
+        < Ap.Screen name="ApList" component={ ApplincesList }  options={{headerShown: false}} />
+        < Ap.Screen name="AppInner" component={ ApplianceInner } options={{headerShown: false}} />
     </ Ap.Navigator>
   )
 

@@ -11,21 +11,18 @@ import ApplianceInner from '../screens/ApplianceInnerScreen';
 
 
 
-const ListComponentsButton = ({
+export const ListComp = ({
   buttonTitle,
   btnType,
   btnColor,
-  name,
-  id,onPress
+  onPress,
 }) => {
   const nav= useNavigation();
   return ( 
   <View>
     <TouchableOpacity
       style={[sty.rt,{backgroundColor: btnColor}]}      
-      onPress={onPress?onPress:() => {
-        nav.navigate("ApList", { RoomName1 : name , RoomId : id })
-      }}
+      onPress={onPress}
       >
         
       <View style={sty.btnTxtWrapper}>
@@ -68,5 +65,3 @@ const sty=StyleSheet.create({
       }
    
 })
-
-export  {ListComponentsButton};

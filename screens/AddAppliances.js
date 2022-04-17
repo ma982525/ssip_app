@@ -2,13 +2,12 @@ import React from "react";
 import { useRoute } from "@react-navigation/native";
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput,KeyboardAvoidingView } from "react-native";
 import AddHeaderButton from "../components/AddHeaderButton";
-import Textfiled from "../components/Textfiled";
-import COLORS from "../const/colors";
 import styles from "../const/styles";
 import { useNavigation } from "@react-navigation/native";
-import { database, authicaton,firestore } from "../const/firebase";
+import { authicaton,firestore } from "../const/firebase";
 import {doc,collection,setDoc,addDoc} from "firebase/firestore";
 import { useState } from "react";
+import { Picker } from "@react-native-picker/picker";
 const saveData = () => {
   navigation.navigate('HomeScreen')
 }
@@ -17,7 +16,8 @@ const saveData = () => {
 const AddAppliances = props => {
   const navigation = useNavigation();
   const route = useRoute();
-  const RoomName = route.params.RoomName;
+  const RoomName = route.params.RoomName;  
+  const RoomId=route.params.RoomId;
 
 
   const user = authicaton.currentUser;
@@ -28,12 +28,15 @@ const AddAppliances = props => {
   const [ApplianceKey, setApplianceKey] = useState(null);
   const [ApplianceCategory, setApplianceCategory] = useState(null);
   const AddRoomDataBase = () => {
-    const ref = doc(collection(firestore, uid + '/' + 'user'+ '/' + "Room"+'/'+ RoomName+'/'+"Appliance"),ApplianceName);
+    const id1= Math.floor(Math.random() * 10000000000) + 1;
+    const ref = doc(collection(firestore, 'user' + '/' + uid + '/'+"Appliance"), id1.toString());
     setDoc(ref,{
+      RoomId : RoomId ,
       ApplianceName : ApplianceName,
       ApplianceID : ApplianceID,
       ApplianceKey : ApplianceKey,
-      ApplianceCategory : ApplianceCategory
+      ApplianceCategory : ApplianceCategory,
+      ApId: id1
     });
   }
 
@@ -75,7 +78,7 @@ const AddAppliances = props => {
             value={ApplianceKey}
           />
         </View>
-        <View style={styles.inputView100}>
+        {/* <View style={styles.inputView100}>
           <TextInput
             style={styles.TextInput}
             placeholder="Enter Appliance Category"
@@ -83,6 +86,21 @@ const AddAppliances = props => {
             onChangeText={setApplianceCategory}
             value={ApplianceCategory}
           />
+        </View> */}
+        <View style={styles.inputView100}>
+          <Picker
+            style={{color:"black",height:50,width:"100%",marginTop:"-10px",borderColor:"grey",borderWidth:1}}            
+            selectedValue={ApplianceCategory}
+            placeholder="Enter Appliance Category"
+            placeholderTextColor="grey"
+            onChangeText={setApplianceCategory}
+            onValueChange={(itemValue,itemIndex) => setApplianceCategory(itemValue)}
+          >
+            <Picker.Item label="Light" value="lightbulb-on"/>
+            <Picker.Item label="Fan" value="ceiling-fan"/>            
+            <Picker.Item label="AC" value="air-conditioner"/>            
+            <Picker.Item label="other" value="view-grid"/>
+          </Picker>
         </View>
         {/*       
           <Textfiled 
@@ -113,7 +131,7 @@ const AddAppliances = props => {
             setApplianceID(null);
             setApplianceKey(null);
             setApplianceName(null);
-            navigation.navigate("AddApp", { RoomName: RoomName });
+            navigation.navigate("AddApp", { RoomName: RoomName, RoomId : RoomId });
           }}>
             <Text style={styles.TextOfButtonInner2}>
               Add More Appliance

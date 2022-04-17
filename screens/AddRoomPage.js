@@ -40,11 +40,13 @@ const AddRoomPage = () => {
       { marginLeft: 20 },
       { marginRight: 20 }]} >
         <TouchableOpacity onPress={() => {
-          const ref = doc(collection(firestore, uid + '/' + 'user'+ '/' + "Room" ),Room);
+          const id= Math.floor(Math.random() * 1000000000) + 1;
+          const ref = doc(collection(firestore, 'user' + '/' + uid+ '/' + "Room"),id.toString());
           setDoc(ref,{
+            RoomId : id,
             RoomName : Room
           });
-          navigation.navigate("AddApp",{ RoomName : Room })}}>
+          navigation.navigate("AddApp",{RoomId : id, RoomName : Room })}}>
           <Text style={styles.TextOfButtonInner2}>
             SUBMIT
           </Text>

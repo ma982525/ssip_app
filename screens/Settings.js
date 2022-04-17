@@ -79,14 +79,15 @@ export default function SettingScreen({ navigation }) {
           });
       })
       .then(() => {
-        deleteDoc(doc(firestore, "user/" + uid ));
-        deleteUser(user)
+        deleteDoc(doc(firestore, "user/" + uid )).then(()=>{
+          deleteUser(user)
           .then(() => {
             nav.replace("Auth");
           })
           .catch((e) => {
             console.log(e);
           });
+        });  
       });
   };
 
@@ -165,7 +166,7 @@ export default function SettingScreen({ navigation }) {
             reauthenticateWithCredential(user, crad).then(() => {
               deleteData();
             });
-          }, // It is an object that holds fields data
+          }, 
         },
       ],
       fields: [
@@ -238,7 +239,7 @@ export default function SettingScreen({ navigation }) {
     
 
   return (
-    <>
+    <ScrollView>
       <View style={animating == "false" ? sty.containerhide : sty.container2}>
         <ActivityIndicator
           animating={animating == "false" ? false : true}
@@ -283,7 +284,7 @@ export default function SettingScreen({ navigation }) {
           onPress={()=>{logout();}}
         />
       </ScrollView>
-    </>
+    </ScrollView>
   );
 }
 const sty = StyleSheet.create({

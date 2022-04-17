@@ -8,7 +8,7 @@ import { authicaton,firestore } from "../const/firebase";
 import {doc,collection,setDoc,addDoc} from "firebase/firestore";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
-
+import { AlertBox, fire } from "react-native-alertbox";
 
 const AddAppliances = props => {
   const navigation = useNavigation();
@@ -25,20 +25,26 @@ const AddAppliances = props => {
   const [ApplianceKey, setApplianceKey] = useState(null);
   const [ApplianceCategory, setApplianceCategory] = useState(null);
   const AddRoomDataBase = () => {
-    const id1= Math.floor(Math.random() * 10000000000) + 1;
-    const ref = doc(collection(firestore, 'user' + '/' + uid + '/'+"Appliance"), id1.toString());
-    setDoc(ref,{
-      RoomId : RoomId ,
-      ApplianceName : ApplianceName,
-      ApplianceID : ApplianceID,
-      ApplianceKey : ApplianceKey,
-      ApplianceCategory : ApplianceCategory,
-      ApId: id1
-    });
+    if(ApplianceCategory=="NonSelect"){
+        fire({message : "Please Select Item Type"})
+    }else{
+      const id1= Math.floor(Math.random() * 10000000000) + 1;
+      const ref = doc(collection(firestore, 'user' + '/' + uid + '/'+"Appliance"), id1.toString());
+      setDoc(ref,{
+        RoomId : RoomId ,
+        ApplianceName : ApplianceName,
+        ApplianceID : ApplianceID,
+        ApplianceKey : ApplianceKey,
+        ApplianceCategory : ApplianceCategory,
+        ApId: id1
+      });
+    }
+    
   }
 
   return (
     <ScrollView >
+     <AlertBox />
       <KeyboardAvoidingView style={{ flex: 1, height: '100%',width:'100%',marginBottom:80 }}>
 
       <AddHeaderButton text="Add Appliances" />
@@ -84,6 +90,7 @@ const AddAppliances = props => {
             onChangeText={setApplianceCategory}
             onValueChange={(itemValue,itemIndex) => setApplianceCategory(itemValue)}
           >
+            <Picker.Item label="Select Item Type" value="NonSelect"/>
             <Picker.Item label="Light" value="lightbulb-on"/>
             <Picker.Item label="Fan" value="fan"/>            
             <Picker.Item label="AC" value="air-conditioner"/>            

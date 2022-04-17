@@ -78,18 +78,9 @@ const AddAppliances = props => {
             value={ApplianceKey}
           />
         </View>
-        {/* <View style={styles.inputView100}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Enter Appliance Category"
-            placeholderTextColor="grey"
-            onChangeText={setApplianceCategory}
-            value={ApplianceCategory}
-          />
-        </View> */}
         <View style={styles.inputView100}>
           <Picker
-            style={{color:"black",height:50,width:"100%",marginTop:"-10px",borderColor:"grey",borderWidth:1}}            
+            style={{color:"black",height:50,width:"100%",borderColor:"grey",borderWidth:1}}            
             selectedValue={ApplianceCategory}
             placeholder="Enter Appliance Category"
             placeholderTextColor="grey"
@@ -102,26 +93,6 @@ const AddAppliances = props => {
             <Picker.Item label="other" value="view-grid"/>
           </Picker>
         </View>
-        {/*       
-          <Textfiled 
-           placeholder={"Appliances Name"}
-           label={"Add Appliances Name"}
-          />
-
-          <Textfiled 
-           placeholder={"Appliances ID"}
-           label={"Add Appliances ID"}
-          />
-
-          <Textfiled 
-           placeholder={"Appliances Key"}
-           label={"Add Appliances Key"}
-          />
-
-          <Textfiled 
-           placeholder={"Appliances Category"}
-           label={"Add Appliances Category"}
-          /> */}
       </View>
 
       <View style={[styles.buttonAdd, { height: 50, marginLeft: 20, marginRight: 20, marginBottom: 20 }]} >

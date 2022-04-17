@@ -34,7 +34,7 @@ export default function ProductScreen() {
       val.forEach(async(se) =>{
         id=se.RoomId;
       })
-      navigation.navigate("AddNewApp",{ RoomId : id }).catch(()=>{
+      navigation.navigate("AddNewApp",{RoomName: Room, RoomId : id }).catch(()=>{
         alert("Room Not Found !!");
       });
     });

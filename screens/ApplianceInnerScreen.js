@@ -44,7 +44,7 @@ const ApplianceInner = props => {
     const nav = useNavigation();
     const [lastPower, setlastPower] = useState(0);
     const [Power, setPower] = useState([]);
-    const [timer, timerset] = useState(false);
+    const [timer, timerset] = useState(true);
 
     useEffect(async () => {
         onValue(ref(database, "/" + key + '/Current'), (snapshot) => {

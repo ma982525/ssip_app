@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {View,Text} from "react-native";
 import COLORS from "../const/colors";
 import { Switch } from "react-native-gesture-handler";
-import {update,ref,onValue} from "firebase/database";
+import {update,ref,onValue,set} from "firebase/database";
 import { database } from "../const/firebase";
 
 export const SwitchOfNoOff = ({

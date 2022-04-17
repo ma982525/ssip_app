@@ -26,7 +26,7 @@ const AddAppliances = props => {
   const [ApplianceCategory, setApplianceCategory] = useState(null);
   const AddRoomDataBase = () => {
     if(ApplianceCategory=="NonSelect"){
-        fire({message : "Please Select Item Type"})
+        fire({title: "Please Select Item Type"})
     }else{
       const id1= Math.floor(Math.random() * 10000000000) + 1;
       const ref = doc(collection(firestore, 'user' + '/' + uid + '/'+"Appliance"), id1.toString());
@@ -75,7 +75,7 @@ const AddAppliances = props => {
         <View style={styles.inputView100}>
           <TextInput
             style={styles.TextInput}
-            placeholder="Enter Appliance Key"
+            placeholder="Enter Appliance connect Pin Name"
             placeholderTextColor="grey"
             onChangeText={setApplianceKey}
             value={ApplianceKey}
@@ -106,7 +106,7 @@ const AddAppliances = props => {
             setApplianceID(null);
             setApplianceKey(null);
             setApplianceName(null);
-            navigation.navigate("AddApp", { RoomName: RoomName, RoomId : RoomId });
+            navigation.navigate("AddApp", { RoomId : RoomId });
           }}>
             <Text style={styles.TextOfButtonInner2}>
               Add More Appliance

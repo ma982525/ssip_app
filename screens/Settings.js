@@ -13,7 +13,7 @@ import COLORS from "../const/colors";
 import styles from "../const/styles";
 import { LogoutButton } from "../components/LogoutButton";
 import { useNavigation, StackActions } from "@react-navigation/native";
-
+import { windowHeight, windowWidth } from "../const/Dimensions";
 import {
   doc,
   deleteDoc,
@@ -275,14 +275,15 @@ export default function SettingScreen({ navigation }) {
             deleteuser();
           }}
         />
-
+        <View style={{marginBottom: (windowHeight / 5) + 40 }}>
         <LogoutButton
           buttonTitle="LOGOUT"
           btnType="logout"
           btnColor={COLORS.red}
           mystyle="logout"
           onPress={()=>{logout();}}
-        />
+         />
+        </View>
       </ScrollView>
     </ScrollView>
   );

@@ -23,10 +23,6 @@ const Login = ({ props, navigation }) => {
   const [errortext, setErrortext] = useState('');
   const [animating, setanimating] = useState('false');
 
-  const fbLogin = () => {
-    console.log("fb");
-  }
-
   const handleSubmitPress = () => {
     setanimating('true');
     setErrortext('');
@@ -103,7 +99,7 @@ const Login = ({ props, navigation }) => {
   });
 
   return (
-    <ScrollView>
+    <View>
       <View style={(animating == 'false') ? sty.containerhide : sty.container}>
         <ActivityIndicator
           animating={(animating == 'false') ? false : true}
@@ -115,8 +111,6 @@ const Login = ({ props, navigation }) => {
       <ScrollView>
         <KeyboardAvoidingView style={{ flex: 1, alignItems: 'center', height: '100%', marginTop: windowHeight / 6 }}>
           <Text style={styles.TextView}>Login</Text>
-
-
           <StatusBar style="auto" />
           <View style={styles.inputView}>
             <TextInput
@@ -148,13 +142,13 @@ const Login = ({ props, navigation }) => {
           <TouchableOpacity
             onPress={() => navigation.navigate('Signup')}
           >
-            <View style={{ height: 10, margin: 50 }}>
+            <View style={{ height: 10, margin: 50 ,marginBottom: windowHeight/2 }}>
               <Text style={styles.forgot_button}>Don't have Account Create One?</Text>
             </View>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </ScrollView>
-    </ScrollView>
+      </View>
   );
 }
 

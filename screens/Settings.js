@@ -1,25 +1,27 @@
-import React,{useState,useEffect} from 'react'
-import { Text,View,TouchableOpacity, Alert,StyleSheet,ActivityIndicator} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { SettingButton } from '../components/SettingButton';
-import COLORS from "../const/colors"
-import styles from "../const/styles"
-import FontAwesome from 'react-native-vector-icons/MaterialCommunityIcons';
-import { LogoutButton } from '../components/LogoutButton';
-import { useNavigation, StackActions } from "@react-navigation/native"
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { SettingButton } from "../components/SettingButton";
+import COLORS from "../const/colors";
+import styles from "../const/styles";
+import { LogoutButton } from "../components/LogoutButton";
+import { useNavigation, StackActions } from "@react-navigation/native";
 
 import {
+  doc,
+  deleteDoc,
+  getDocs,
   collection,
   query,
-  onSnapshot,
-  getDocs,
-  doc,
-  where,
-  deleteDoc,
-  deleteField,
 } from "firebase/firestore";
 import { authicaton, database, firestore } from "../const/firebase";
-
 
 import {
   EmailAuthCredential,
@@ -30,96 +32,17 @@ import {
   updateProfile,
   deleteUser,
 } from "firebase/auth";
-import {AlertBox,fire} from "react-native-alertbox";
+import { AlertBox, fire } from "react-native-alertbox";
 import { ref } from "firebase/database";
 
-
-export default function SettingScreen({navigation}) {
-
-  
-  const [animating,setanimating] = useState('false');  
+export default function SettingScreen({ navigation }) {
+  const [animating, setanimating] = useState("false");
   const [data, setdata] = useState();
   const user = authicaton.currentUser;
   const name = user.displayName;
   const uid = user.uid;
   const nav = useNavigation();
 
-  const Edituser = () => fire({
-    title: "Edit Name",
-    message: "Please enter your Name & Password for Verification",
-    actions: [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Change",
-        onPress: (data) => {
-          setanimating('true');
-          const cred = EmailAuthProvider.credential(
-            user.email,
-            data.Password
-          );
-          reauthenticateWithCredential(user, cred).then(() => {
-            updateProfile(user, {
-              displayName: data.Name
-            }).then(() => {
-              setanimating('false');
-              reauthenticateWithCredential(user, cred);
-              Alert.alert("Successfully Updated",
-              "Your name is successfully changed.");
-            }).catch((error) => {
-              setanimating('false');
-              console.log(error);
-            });
-          }).catch((e)=>{
-            setanimating('false');
-            console.log(e)
-          });;
-        },
-      },
-    ],
-    fields: [
-      {
-        name: "Name",
-        placeholder: "Name",
-      },
-      {
-        name: "Password",
-        placeholder: "Password",
-      },
-    ],
-  });
-
-  const deleteuser = () => fire({
-    title: "Delete Account",
-    message: "Please enter your Password for Verification",
-    actions: [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Delete",
-        onPress: (data) => {
-          setanimating('true');
-          const crad = EmailAuthProvider.credential(
-            user.email,
-            data.Password
-          );
-          reauthenticateWithCredential(user, crad).then(() => {
-            deleteData();
-            });
-        }, // It is an object that holds fields data
-      },
-    ],
-    fields: [
-      {
-        name: "Password",
-        placeholder: "Password",
-      },
-    ],
-  });
   const deleteData = () => {
     const q = query(collection(firestore, "user/" + uid + "/Room"));
     const val = [];
@@ -127,15 +50,18 @@ export default function SettingScreen({navigation}) {
       .then((dw) => {
         dw.forEach((snap) => {
           val.push(snap.data());
+          console.log("hello1");
         });
       })
       .then(() => {
         val.forEach((snap) => {
-          let id = snap.RoomId.toString();
-          deleteDoc(doc(firestore, "user/" + uid + "/Room/" + id));
+          let id = snap.RoomId;
+          console.log(id);
+          deleteDoc(doc(firestore, "user/" + uid + "/Room/" + id.toString()));
         });
       })
       .then(() => {
+        console.log("hello2");
         const q1 = query(collection(firestore, "user/" + uid + "/Appliance"));
         const val1 = [];
         getDocs(q1)
@@ -146,9 +72,9 @@ export default function SettingScreen({navigation}) {
           })
           .then(() => {
             val1.forEach((snap) => {
-              let id = snap.ApId.toString();
+              let id = snap.ApId;
               console.log(id);
-              deleteDoc(doc(firestore, "user/" + uid + "/Appliance/" + id));
+              deleteDoc(doc(firestore, "user/" + uid + "/Appliance/" + id.toString()));
             });
           });
       })
@@ -162,9 +88,96 @@ export default function SettingScreen({navigation}) {
             console.log(e);
           });
       });
-    };
+  };
 
-  const resetpassword = () => fire({
+  const Edituser = () =>
+    fire({
+      title: "Edit Name",
+      message: "Please enter your Name & Password for Verification",
+      actions: [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Change",
+          onPress: (data) => {
+            setanimating("true");
+            const cred = EmailAuthProvider.credential(
+              user.email,
+              data.Password
+            );
+            reauthenticateWithCredential(user, cred)
+              .then(() => {
+                updateProfile(user, {
+                  displayName: data.Name,
+                })
+                  .then(() => {
+                    setanimating("false");
+                    reauthenticateWithCredential(user, cred);
+                    Alert.alert(
+                      "Successfully Updated",
+                      "Your name is successfully changed."
+                    );
+                  })
+                  .catch((error) => {
+                    setanimating("false");
+                    console.log(error);
+                  });
+              })
+              .catch((e) => {
+                setanimating("false");
+                console.log(e);
+              });
+          },
+        },
+      ],
+      fields: [
+        {
+          name: "Name",
+          placeholder: "Name",
+        },
+        {
+          name: "Password",
+          placeholder: "Password",
+        },
+      ],
+    });
+
+  const deleteuser = () =>
+    fire({
+      title: "Delete Account",
+      message: "Please enter your Password for Verification",
+      actions: [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: (data) => {
+            setanimating("true");
+
+            const crad = EmailAuthProvider.credential(
+              user.email,
+              data.Password
+            );
+            reauthenticateWithCredential(user, crad).then(() => {
+              deleteData();
+            });
+          }, // It is an object that holds fields data
+        },
+      ],
+      fields: [
+        {
+          name: "Password",
+          placeholder: "Password",
+        },
+      ],
+    });
+
+  const resetpassword = () =>
+    fire({
       title: "Update Password",
       message: "Please enter your old and newPassword and then click approve",
       actions: [
@@ -175,7 +188,7 @@ export default function SettingScreen({navigation}) {
         {
           text: "Submit",
           onPress: (data) => {
-            setanimating('true');
+            setanimating("true");
             const crad = EmailAuthProvider.credential(
               user.email,
               data.OldPassword
@@ -183,7 +196,7 @@ export default function SettingScreen({navigation}) {
             reauthenticateWithCredential(user, crad).then(() => {
               updatePassword(user, data.NewPassword).then(() => {
                 const resetAction = StackActions.replace("Auth");
-                setanimating('false');
+                setanimating("false");
                 nav.dispatch(resetAction);
               });
             });
@@ -202,75 +215,97 @@ export default function SettingScreen({navigation}) {
       ],
     });
 
+    const logout = () => 
+      fire({title: "Logout"  , 
+          message: "Are you sure LogOut ",
+          actions : [
+            {
+              text: "No, don't",
+              style: "cancel",
+            },
+            {
+              text: "Yes, Please",
+              onPress: () => {
+                signOut(authicaton).then(() => {
+                  navigation.replace("Auth");
+                }).catch(error => {
+                  console.log(error);
+                });
+              },
+            },
+          ]
+     })
+    
 
-  return (<>
-    <View style={(animating=='false')?sty.containerhide:sty.container2}>
+  return (
+    <>
+      <View style={animating == "false" ? sty.containerhide : sty.container2}>
         <ActivityIndicator
-          animating={(animating=='false')?false:true}
+          animating={animating == "false" ? false : true}
           color="rgba(101, 88, 245, 1)"
           size="large"
-          style={sty.activityIndicator} />
+          style={sty.activityIndicator}
+        />
       </View>
-    <AlertBox/>
-    <ScrollView style={styles.SettingStyle}>
-      <SettingButton 
-      buttonTitle="Edit Details"
-      btnType="account-edit"
-      btnColor={COLORS.theme}
-      onPress={() => {
-        Edituser();
-      }}
-      />
-      <SettingButton 
-      buttonTitle="Edit Password"
-      btnType="lock"
-      btnColor={COLORS.theme}
-      onPress={() => {
-        resetpassword();
-      }}
-      />
+      <AlertBox />
+      <ScrollView style={styles.SettingStyle}>
+        <SettingButton
+          buttonTitle="Edit Details"
+          btnType="account-edit"
+          btnColor={COLORS.theme}
+          onPress={() => {
+            Edituser();
+          }}
+        />
+        <SettingButton
+          buttonTitle="Edit Password"
+          btnType="lock"
+          btnColor={COLORS.theme}
+          onPress={() => {
+            resetpassword();
+          }}
+        />
 
-    <SettingButton 
-      buttonTitle="Delete Account"
-      btnType="delete-empty"
-      btnColor={COLORS.theme}
-      onPress={() => {
-        deleteuser();
-      }}
-      />
+        <SettingButton
+          buttonTitle="Delete Account"
+          btnType="delete-empty"
+          btnColor={COLORS.theme}
+          onPress={() => {
+            deleteuser();
+          }}
+        />
 
-    <LogoutButton
-      buttonTitle="LOGOUT"
-      btnType="logout"
-      btnColor={COLORS.red}
-      mystyle="logout"
-      navigation={navigation}
-      />
-
-    </ScrollView>
+        <LogoutButton
+          buttonTitle="LOGOUT"
+          btnType="logout"
+          btnColor={COLORS.red}
+          mystyle="logout"
+          onPress={()=>{logout();}}
+        />
+      </ScrollView>
     </>
   );
 }
 const sty = StyleSheet.create({
   container2: {
     flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-    width: '100%',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    width: "100%",
     zIndex: 10,
-    position: 'absolute',
-    backgroundColor: 'rgba(255,255,255,0.8)'
+    position: "absolute",
+    backgroundColor: "rgba(255,255,255,0.8)",
   },
   containerhide: {
-    display: 'none'
+    display: "none",
   },
   activityIndicator: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: 80,
-    zIndex:20,
+    zIndex: 20,
   },
 });

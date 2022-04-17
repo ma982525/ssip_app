@@ -8,9 +8,6 @@ import { authicaton,firestore } from "../const/firebase";
 import {doc,collection,setDoc,addDoc} from "firebase/firestore";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
-const saveData = () => {
-  navigation.navigate('HomeScreen')
-}
 
 
 const AddAppliances = props => {
@@ -88,7 +85,7 @@ const AddAppliances = props => {
             onValueChange={(itemValue,itemIndex) => setApplianceCategory(itemValue)}
           >
             <Picker.Item label="Light" value="lightbulb-on"/>
-            <Picker.Item label="Fan" value="ceiling-fan"/>            
+            <Picker.Item label="Fan" value="fan"/>            
             <Picker.Item label="AC" value="air-conditioner"/>            
             <Picker.Item label="other" value="view-grid"/>
           </Picker>

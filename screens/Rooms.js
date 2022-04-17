@@ -14,7 +14,6 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function RoomsScreen() {
   const [RoomValue, setRoomValue] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
   const user = authicaton.currentUser;
@@ -67,9 +66,6 @@ export default function RoomsScreen() {
               btnColor={COLORS.theme}
               name={item.RoomName}
               id={item.RoomId}
-              // onPress={() => {
-              //   nav.navigate("ApList", { RoomName1 : item.RoomName , RoomId : item.RoomId })
-              // }}
             />
           )}
           keyExtractor={item => item.RoomId} />

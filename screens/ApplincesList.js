@@ -15,7 +15,6 @@ import { useRoute } from "@react-navigation/native";
 
 export default function ApplincesList() {
   const [ApplianceValue, setApplianceValue] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
   const user = authicaton.currentUser;
@@ -66,7 +65,7 @@ export default function ApplincesList() {
           renderItem={({ item }) => (
             <ListComponentsButton
               buttonTitle={item.ApplianceName}
-              btnType="bed"
+              btnType={item.ApplianceCategory}
               btnColor={COLORS.theme}
               onPress={() => {
                 nav.navigate("AppInner", {

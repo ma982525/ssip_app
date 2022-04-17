@@ -41,7 +41,8 @@
     "react-native-svg": "^12.1.1",
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "0.17.1",
-    "react-timer-mixin": "^0.13.4"
+    "react-timer-mixin": "^0.13.4",
+    "expo-updates": "~0.11.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

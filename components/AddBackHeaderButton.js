@@ -12,7 +12,7 @@ const navigation=useNavigation();
   return (
     <View style={{
       flex: 1, flexDirection: 'row', alignContent: "center",
-      justifyContent: "center"
+      justifyContent: "center",backgroundColor:"white"
     }}>
 
       <View>

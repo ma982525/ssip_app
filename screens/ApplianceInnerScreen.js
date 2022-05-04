@@ -222,8 +222,8 @@ console.log(parseFloat(hr))
                     size={180}
                     width={30}
                     fill={lastPower}
-                    tintColor="#00e0ff"
-                    backgroundColor="#3d5875"
+                    tintColor="#fe7f7f"
+                    backgroundColor="#ffc5c550"
                     padding={10}
                     arcSweepAngle={247}
                     rotation={237}
@@ -235,12 +235,12 @@ console.log(parseFloat(hr))
                 
                 <TotalUnit pathOfSwitchData={"/" + key}/>
                 <SwitchOfNoOff pathOfSwitchData={"/" + key} />
-                <View style={{marginLeft : 30, marginBottom : 50}}>
-                <ListComponentsButton
-                    buttonTitle={"Add Timer"}
-                    btnType="alarm-plus"
-                    btnColor={COLORS.theme}
-                    onPress={() => { setTimer() }} />
+                <View style={{width:windowWidth,marginLeft:20,marginBottom : 100}}>
+                    <ListComponentsButton
+                        buttonTitle={"Add Timer"}
+                        btnType="alarm-plus"
+                        btnColor="#ffc5c5"
+                        onPress={() => { setTimer() }} />
                 </View>
 
             </KeyboardAvoidingView>

@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { View, ScrollView,  TouchableOpacity, Text, TextInput,KeyboardAvoidingView } from "react-native";
+import { View, ScrollView,  TouchableOpacity, Text, TextInput,KeyboardAvoidingView,Image } from "react-native";
 import COLORS from "../const/colors"
 import styles from "../const/styles"
 import AddHeaderButton from '../components/AddHeaderButton';
@@ -48,10 +48,14 @@ export default function ProductScreen() {
       <ScrollView>
        
       <AddHeaderButton text="Add Appliances" />
+
+      <View style={{width:windowWidth-40,marginLeft:20,height:windowHeight/4+35,marginVertical:20}}>
+          <Image source={require('../assets/home_hero.png')} style={{width:"100%",height:"100%"}}/>
+      </View>
       
-      <View style={[styles.marginsetOfTextConatiner ,{marginTop : 60}]}>
+      <View style={[styles.marginsetOfTextConatiner ,{marginTop : 0}]}>
      
-        <Text style={{fontSize:20,textAlign:'center'}}>Enter Already exist Room Name</Text>
+        <Text style={{fontSize:18,textAlign:'left',fontWeight:"bold"}}>Enter Already exist Room Name</Text>
         <View style={styles.inputView100}>
           <TextInput
             style={styles.TextInput}

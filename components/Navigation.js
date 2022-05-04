@@ -12,6 +12,7 @@ import { Text,StyleSheet,View} from 'react-native';
 import ApplianceInner from '../screens/ApplianceInnerScreen';
 import AddRoomPage from '../screens/AddRoomPage';
 import ApplincesList from '../screens/ApplincesList';
+import COLORS from '../const/colors';
 
 const Appstack = createStackNavigator();
 const AppNav = () =>{
@@ -59,7 +60,7 @@ const Tabs = () => {
                 "tabBarShowLabel":false,
                 "tabBarStyle":{
                     "position":'absolute',
-                    "backgroundColor":'#301A4B',
+                    "backgroundColor":'black',
                     "bottom":20,
                     "left":20,
                     "right":20,
@@ -68,7 +69,7 @@ const Tabs = () => {
                     "height":80,
                     ...style.shadow
                 },
-                headerStyle: { backgroundColor: '#301A4B' },
+                headerStyle: { backgroundColor: 'black' },
                 headerTintColor: '#fff',
                 headerTitleStyle: { fontWeight: 'bold',padding:10},
                 tabBarHideOnKeyboard: true,
@@ -109,8 +110,8 @@ const Tabs = () => {
                 options={{
                     tabBarColor: '#d02760',
                     tabBarIcon: ({color,focused}) => (
-                        <View style={{backgroundColor:focused?'#ffd43b':'#fff',borderRadius:50,position:'absolute',top:-25,padding:10,borderWidth:5,borderColor:'#301A4B'}}>
-                            <Icon color={focused?'#000':'#301A4B'} name="plus" style={style.plus}  />
+                        <View style={{backgroundColor:focused?'#ffd43b':'#fff',borderRadius:50,position:'absolute',top:-25,padding:10,borderWidth:5,borderColor:'black'}}>
+                            <Icon color={focused?'#000':'black'} name="plus" style={style.plus}  />
                         </View>
                     ),
                     headerShown:false

@@ -68,12 +68,18 @@ export const TotalUnit = ({
 
   }, [])
 
-
+  var temp=parseFloat(lastPower*hour)*7.10/1000;
+  var temp2;
+  var rupees=0;
+  if(setIsEnabled)
+    temp2=parseInt(temp*100)
+  if(setIsEnabled==false)
+    rupees= temp2/100 + rupees;
 
   return (
     <View>
       <Text style={styles.TextInput}> Consumption in Units : {parseFloat(lastPower * hour) / 1000}</Text>
-      <Text style={styles.TextInput}> Consumption in Rupees : {parseFloat(lastPower * hour) * 7.10 / 1000} ₹ </Text>
+      <Text style={styles.TextInput}> Consumption in Rupees : ₹ {rupees} </Text>
     </View>
   )
 }

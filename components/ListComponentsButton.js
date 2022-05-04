@@ -24,11 +24,11 @@ const ListComponentsButton = ({
       >
         
       <View style={sty.btnTxtWrapper}>
-        <FontAwesome name={btnType} size={22} color={COLORS.white} style={{paddingLeft:10,width:'10%'}}/>
+        <FontAwesome name={btnType} size={22} color="#811212" style={{paddingLeft:10,width:'10%'}}/>
         <Text style={sty.TextOfButtonInner}>{buttonTitle}</Text>
-        <TouchableOpacity style={{width:'12%',backgroundColor:COLORS.red,height:'100%',alignItems:'center',justifyContent:'center',borderTopRightRadius:8,borderBottomRightRadius:8}}>
+        {/* <TouchableOpacity style={{width:'12%',backgroundColor:COLORS.red,height:'100%',alignItems:'center',justifyContent:'center',borderTopRightRadius:8,borderBottomRightRadius:8}}>
             <FontAwesome name="square-edit-outline" size={22} color={COLORS.white}/>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </TouchableOpacity>
 
@@ -50,7 +50,8 @@ const sty=StyleSheet.create({
     },
     TextOfButtonInner:{
         fontSize: 16,
-        color: COLORS.white,
+        color: "#811212",
+        fontWeight:"bold",
         paddingLeft:10,
         width:'78%',
       },

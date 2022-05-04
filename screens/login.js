@@ -142,7 +142,7 @@ const Login = ({ props, navigation }) => {
           <TouchableOpacity
             onPress={() => navigation.navigate('Signup')}
           >
-            <View style={{ height: 10, margin: 50 ,marginBottom: windowHeight/2 }}>
+            <View style={{ height: 10, margin: 20 ,marginBottom: windowHeight/2 }}>
               <Text style={styles.forgot_button}>Don't have Account Create One?</Text>
             </View>
           </TouchableOpacity>

@@ -78,7 +78,7 @@ const AddAppliances = props => {
         </View>
         <View style={styles.inputView100}>
           <Picker
-            style={{color:"black",height:50,width:"100%",borderColor:"grey",borderWidth:1}}            
+            style={{color:"black",height:0,width:"100%",borderColor:"red",borderWidth:1}}            
             selectedValue={ApplianceCategory}
             placeholder="Enter Appliance Category"
             placeholderTextColor="grey"

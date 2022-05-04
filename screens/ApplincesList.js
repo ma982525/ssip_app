@@ -66,7 +66,7 @@ export default function ApplincesList() {
             <ListComponentsButton
               buttonTitle={item.ApplianceName}
               btnType={item.ApplianceCategory}
-              btnColor={COLORS.theme}
+              btnColor="#ffc5c5"
               onPress={() => {
                 nav.navigate("AppInner", {
                   RoomId : item.RoomId,

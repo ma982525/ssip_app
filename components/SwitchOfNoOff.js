@@ -54,6 +54,7 @@ export const SwitchOfNoOff = ({
       style={{
         backgroundColor: COLORS.theme,
         margin: 20,
+        marginBottom:0,
         borderRadius: 10,
         display: "flex",
         flexDirection: "row",

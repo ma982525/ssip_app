@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View, Text, TouchableOpacity,TextInput } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity,TextInput,Image } from 'react-native';
 import AddHeaderButton from '../components/AddHeaderButton';
 import Textfiled from "../components/Textfiled";
 import COLORS from "../const/colors";
@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { database , authicaton ,firestore} from "../const/firebase";
 import {addDoc, collection,doc, setDoc} from "firebase/firestore"
 import { useState } from "react";
+import { windowHeight,windowWidth } from "../const/Dimensions";
 
 const AddRoomPage = () => {
 
@@ -23,8 +24,14 @@ const AddRoomPage = () => {
       backgroundColor: COLORS.white }}
     >
       <AddHeaderButton text={"ADD ROOM"} />
-      <View style={[styles.marginsetOfTextConatiner, { paddingTop: 90 }]}>
-        <Text style={{fontSize:20,textAlign:'center'}}>Enter Room Name</Text>
+
+      <View style={{width:windowWidth-40,marginLeft:20,height:windowHeight/4+40,marginVertical:20}}>
+          <Image source={require('../assets/Control_home.png')} style={{width:"100%",height:"100%"}}/>
+      </View>
+
+
+      <View style={{marginHorizontal:20,marginBottom:20}}>
+        <Text style={{fontSize:18,textAlign:'left',fontWeight:"bold"}}>Enter Room Name</Text>
         <View style={styles.inputView100}>
           <TextInput
             style={styles.TextInput}

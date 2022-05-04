@@ -63,7 +63,7 @@ export default function RoomsScreen() {
             <ListComponentsButton
               buttonTitle={item.RoomName}
               btnType="bed"
-              btnColor={COLORS.theme}
+              btnColor="#ffc5c5"
               name={item.RoomName}
               id={item.RoomId}
             />

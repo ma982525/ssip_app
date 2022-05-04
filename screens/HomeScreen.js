@@ -1,4 +1,4 @@
-import { Alert, Dimensions, Image, StyleSheet, Text, View,ScrollView } from 'react-native';
+import { Alert, Dimensions, Image, StyleSheet, Text, View,ScrollView,Linking } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-web';
 import { authicaton } from '../const/firebase';
@@ -11,7 +11,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import React, { useState } from "react";
 import { LineChart,BarChart } from "react-native-chart-kit";
 import tip from "../assets/tips.png";
-import { windowHeight } from '../const/Dimensions';
+import { windowHeight,windowWidth } from '../const/Dimensions';
 
 const chartConfig = {
   backgroundGradientFrom: "#d4c2f8",
@@ -80,7 +80,10 @@ export default function HomeScreen(props) {
           <AnimatedLottieView source={require('../assets/animation.json')} autoPlay loop style={{ position: 'absolute', width: 340, top: -20 }} />
         </View>
         <Text style={{ fontFamily: 'Poppins', fontSize: 16 }}>Make Life Brighter !!</Text>
-        <View style={{borderRadius:15,marginVertical:20,backgroundColor:"#f7f3ff"}}>
+        <View style={{width:"100%",height:windowHeight/4+20,marginVertical:20}}>
+          <Image source={require('../assets/home_hero.png')} style={{width:"100%",height:"100%"}}/>
+        </View>
+        {/* <View style={{borderRadius:15,marginVertical:20,backgroundColor:"#f7f3ff"}}>
           <LineChart
             data={data}
             width={Dimensions.get('window').width- 60}
@@ -92,24 +95,31 @@ export default function HomeScreen(props) {
               marginVertical: 15
             }}
           />
-        </View>
+        </View> */}
         <View style={{ flexDirection: 'row' }}>
           <View style={{borderRadius:15,width:'49%',height:150,backgroundColor:'#cfcfff',marginRight:10,padding:15}}>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={{fontFamily:'PoppinsExtraBold',fontSize:20,color:'#2d2db1',}}>Tips</Text>
                 <Image source={require('../assets/creative-bulb.png')} style={{width:140,height:100}}/>
               </View>
-              <TouchableOpacity><Text style={{fontFamily:'Poppins',color:'#2d2db1',fontSize:12}}>Read More <Icon name="chevron-right" color={'#2d2db1'} size={10}/></Text></TouchableOpacity>
+              <TouchableOpacity><Text style={{fontFamily:'Poppins',color:'#2d2db1',fontSize:12}} onPress={()=>Linking.openURL('https://www.indiatoday.in/information/story/how-to-control-electricity-consumption-here-is-all-you-need-to-know-1733497-2020-10-20')}>Read More <Icon name="chevron-right" color={'#2d2db1'} size={10}/></Text></TouchableOpacity>
           </View>
           <View style={{borderRadius:15,width:'49%',height:150,backgroundColor:'#ffc5c5',marginRight:10,padding:15}}>
             <View style={{ flexDirection: 'row' }}>
                 <Text style={{fontFamily:'PoppinsExtraBold',fontSize:20,color:'#811212',}}>Help</Text>
                 <Image source={require('../assets/gear.png')} style={{width:140,height:100}}/>
               </View>
-              <TouchableOpacity><Text style={{fontFamily:'Poppins',color:'#811212',fontSize:12}}>Learn More <Icon name="chevron-right" color={'#811212'} size={10}/></Text></TouchableOpacity>
+              <TouchableOpacity><Text style={{fontFamily:'Poppins',color:'#811212',fontSize:12}} onPress={()=>Linking.openURL('https://powermin.gov.in/')}>Learn More <Icon name="chevron-right" color={'#811212'} size={10}/></Text></TouchableOpacity>
           </View>
         </View>
-        <View style={{borderRadius:15,marginVertical:20,backgroundColor:"#fff8bb",...styles.shadow}}>
+
+
+        <View style={{width:"100%",height:windowHeight/4+20,marginVertical:20}}>
+          <Image source={require('../assets/Control_home.png')} style={{width:"100%",height:"100%"}}/>
+        </View>
+
+
+        {/* <View style={{borderRadius:15,marginVertical:20,backgroundColor:"#fff8bb",...styles.shadow}}>
         <BarChart
           //style={graphStyle}
           data={data}
@@ -121,8 +131,8 @@ export default function HomeScreen(props) {
             marginVertical: 15
           }}
         />
-        </View>
-        <View style={{height:300,width:"100%"}}>
+        </View> */}
+        <View style={{height:100,width:"100%"}}>
 
         </View>
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRoute } from "@react-navigation/native";
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput,KeyboardAvoidingView } from "react-native";
+import { View, ScrollView, TouchableOpacity, Text, TextInput, KeyboardAvoidingView } from "react-native";
 import AddHeaderButton from "../components/AddHeaderButton";
 import styles from "../const/styles";
 import { useNavigation } from "@react-navigation/native";
@@ -25,9 +25,6 @@ const AddAppliances = props => {
   const [ApplianceKey, setApplianceKey] = useState(null);
   const [ApplianceCategory, setApplianceCategory] = useState(null);
   const AddRoomDataBase = () => {
-    if(ApplianceCategory=="NonSelect"){
-        fire({title: "Please Select Item Type"})
-    }else{
       const id1= Math.floor(Math.random() * 10000000000) + 1;
       const ref = doc(collection(firestore, 'user' + '/' + uid + '/'+"Appliance"), id1.toString());
       setDoc(ref,{
@@ -37,23 +34,21 @@ const AddAppliances = props => {
         ApplianceKey : ApplianceKey,
         ApplianceCategory : ApplianceCategory,
         ApId: id1
-      });
-    }
-    
+      }); 
   }
 
   return (
+    <View>
+      
     <ScrollView >
-     <AlertBox />
       <KeyboardAvoidingView style={{ flex: 1, height: '100%',width:'100%',marginBottom:80 }}>
-
       <AddHeaderButton text="Add Appliances" />
-
+     
       <View style={[styles.marginsetOfTextConatiner, { paddingTop: 30 }]}>
-
+      
         <Text style={{ fontSize: 18, paddingBottom: 10 }}>Enter All Details About Appliances
         </Text>
-
+        
         <View style={styles.inputView100}>
           <TextInput
             style={styles.TextInput}
@@ -101,12 +96,19 @@ const AddAppliances = props => {
 
       <View style={[styles.buttonAdd, { height: 50, marginLeft: 20, marginRight: 20, marginBottom: 20 }]} >
           <TouchableOpacity onPress={() => {
-             AddRoomDataBase();
+            if(ApplianceCategory == null ){   
+              alert("Please Select Item Type");
+            }
+            else
+            {
+            AddRoomDataBase();
             setApplianceCategory(null);
             setApplianceID(null);
             setApplianceKey(null);
             setApplianceName(null);
-            navigation.navigate("AddApp", { RoomId : RoomId });
+            navigation.navigate("AddNewApp", { RoomId : RoomId });
+            }
+            
           }}>
             <Text style={styles.TextOfButtonInner2}>
               Add More Appliance
@@ -115,9 +117,16 @@ const AddAppliances = props => {
         </View>
 
       <View style={[styles.buttonAdd, { height: 50, marginLeft: 20, marginRight: 20 }]} >
-        <TouchableOpacity onPress={() => {
-            AddRoomDataBase();
-            navigation.goBack();
+        <TouchableOpacity onPress={() => { 
+            if(ApplianceCategory == null ){
+              alert("Please Select Item Type");
+            }
+            else
+            {
+              AddRoomDataBase();
+              navigation.goBack();
+            }
+            
           }}>
           <Text style={styles.TextOfButtonInner2}>
             SUBMIT
@@ -126,6 +135,7 @@ const AddAppliances = props => {
       </View>
       </KeyboardAvoidingView>
     </ScrollView>
+    </View>
   )
 }
 

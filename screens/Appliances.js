@@ -6,16 +6,8 @@ import AddHeaderButton from '../components/AddHeaderButton';
 import { useNavigation } from '@react-navigation/native';
 import { firestore,authicaton } from "../const/firebase";
 import {doc,collection,getDocs,query,where} from "firebase/firestore";
-
-// const stack = createStackNavigator();
-// const AppNav = () =>{
-//   return(
-//     < stack.Navigator>
-//       < stack.Screen name="AddRoom" component={ RoomsScreen }  options={{headerShown: false}}/>
-//     </ stack.Navigator>
-//   )
-    
-// }
+import { AlertBox, fire } from "react-native-alertbox";
+import { windowHeight, windowWidth } from "../const/Dimensions";
 
 export default function ProductScreen() {
   const user = authicaton.currentUser;
@@ -24,31 +16,41 @@ export default function ProductScreen() {
   const [Room, onChangeText] = useState();
 
    const getId =() =>{
+    
      let id;
      let val=[];
     const q = query(collection(firestore, "user"+"/"+uid+"/"+"Room"), where("RoomName", "==", Room ));
     const querySnapshot =  getDocs(q).then(async(querySnapshot)=>{
-      querySnapshot.forEach(async(doc) => {
-       val.push(doc.data())
-      });
-      val.forEach(async(se) =>{
-        id=se.RoomId;
-      })
-      navigation.navigate("AddNewApp",{RoomName: Room, RoomId : id }).catch(()=>{
-        alert("Room Not Found !!");
-      });
+      if(querySnapshot.empty)
+      {
+        fire({
+          message: "Room Does Not Exiest"});
+      }
+      else {
+        querySnapshot.forEach(async(doc) => {
+          val.push(doc.data())
+         });
+         val.forEach(async(se) =>{
+           id=se.RoomId;
+         })
+         navigation.navigate("AddNewApp",{RoomName: Room, RoomId : id });
+      }
+      
     });
   
    }
 
   return (
-    <ScrollView style={[
+    <View style={[
       { flex: 1 },
       { backgroundColor: COLORS.white }]}>
-
+      <AlertBox />
+      <ScrollView>
+       
       <AddHeaderButton text="Add Appliances" />
       
-      <View style={[styles.marginsetOfTextConatiner, { paddingTop: 90 }]}>
+      <View style={[styles.marginsetOfTextConatiner ,{marginTop : 60}]}>
+     
         <Text style={{fontSize:20,textAlign:'center'}}>Enter Already exist Room Name</Text>
         <View style={styles.inputView100}>
           <TextInput
@@ -60,10 +62,10 @@ export default function ProductScreen() {
           />
         </View>
       </View>
-
-      <View style={[styles.Submit, { height: 50 },
+    <View style={[{marginBottom : windowWidth}]}>
+    <View style={[styles.Submit, { height: 50 },
       { marginLeft: 20 },
-      { marginRight: 20 }]} >
+      { marginRight: 20 },]} >
         <TouchableOpacity onPress={() => {
            getId();
           }}>
@@ -72,7 +74,9 @@ export default function ProductScreen() {
           </Text>
         </TouchableOpacity>
       </View>
-
+    </View>
+      
     </ScrollView>
+    </View>
   );
 }

@@ -24,7 +24,7 @@ export default function ProductScreen() {
       if(querySnapshot.empty)
       {
         fire({
-          message: "Room Does Not Exiest"});
+          message: "Room Does Not Exist"});
       }
       else {
         querySnapshot.forEach(async(doc) => {

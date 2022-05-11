@@ -13,7 +13,7 @@ import COLORS from "../const/colors";
 import styles from "../const/styles";
 import { LogoutButton } from "../components/LogoutButton";
 import { useNavigation, StackActions } from "@react-navigation/native";
-import { windowHeight, windowWidth } from "../const/Dimensions";
+
 import {
   doc,
   deleteDoc,
@@ -50,18 +50,15 @@ export default function SettingScreen({ navigation }) {
       .then((dw) => {
         dw.forEach((snap) => {
           val.push(snap.data());
-          console.log("hello1");
         });
       })
       .then(() => {
         val.forEach((snap) => {
-          let id = snap.RoomId;
-          console.log(id);
-          deleteDoc(doc(firestore, "user/" + uid + "/Room/" + id.toString()));
+          let id = snap.RoomId.toString();
+          deleteDoc(doc(firestore, "user/" + uid + "/Room/" + id));
         });
       })
       .then(() => {
-        console.log("hello2");
         const q1 = query(collection(firestore, "user/" + uid + "/Appliance"));
         const val1 = [];
         getDocs(q1)
@@ -72,22 +69,21 @@ export default function SettingScreen({ navigation }) {
           })
           .then(() => {
             val1.forEach((snap) => {
-              let id = snap.ApId;
+              let id = snap.ApId.toString();
               console.log(id);
-              deleteDoc(doc(firestore, "user/" + uid + "/Appliance/" + id.toString()));
+              deleteDoc(doc(firestore, "user/" + uid + "/Appliance/" + id));
             });
           });
       })
       .then(() => {
-        deleteDoc(doc(firestore, "user/" + uid )).then(()=>{
-          deleteUser(user)
+        deleteDoc(doc(firestore, "user/" + uid ));
+        deleteUser(user)
           .then(() => {
             nav.replace("Auth");
           })
           .catch((e) => {
             console.log(e);
           });
-        });  
       });
   };
 
@@ -166,7 +162,7 @@ export default function SettingScreen({ navigation }) {
             reauthenticateWithCredential(user, crad).then(() => {
               deleteData();
             });
-          }, 
+          }, // It is an object that holds fields data
         },
       ],
       fields: [
@@ -239,7 +235,7 @@ export default function SettingScreen({ navigation }) {
     
 
   return (
-    <ScrollView>
+    <>
       <View style={animating == "false" ? sty.containerhide : sty.container2}>
         <ActivityIndicator
           animating={animating == "false" ? false : true}
@@ -275,17 +271,16 @@ export default function SettingScreen({ navigation }) {
             deleteuser();
           }}
         />
-        <View style={{marginBottom: (windowHeight / 5) + 40 }}>
+
         <LogoutButton
           buttonTitle="LOGOUT"
           btnType="logout"
           btnColor={COLORS.red}
           mystyle="logout"
           onPress={()=>{logout();}}
-         />
-        </View>
+        />
       </ScrollView>
-    </ScrollView>
+    </>
   );
 }
 const sty = StyleSheet.create({

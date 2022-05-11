@@ -107,7 +107,7 @@ const ApplianceInner = props => {
             {
                 text: "Start Timer",
                 onPress: (data) => {
-                    const total = (parseInt(data.hour) * 3600) + (parseInt(data.Minites) * 60) + parseInt(data.Secound);
+                    const total = (parseInt(data.Hour) * 3600) + (parseInt(data.Minutes) * 60) + parseInt(data.Second);
                     if (total > 0) {
                         let value;
                         onValue(ref(database, "/" + key + "/data" + "/Data1"), (snapshot) => {
@@ -134,20 +134,24 @@ const ApplianceInner = props => {
                     }
                 }
             },
+            {
+                text: "Cancel",
+                style: "cancel",
+            }
         ],
         fields: [
             {
-                name: "hour",
-                placeholder: "hour",
+                name: "Hour",
+                placeholder: "Hour",
 
             },
             {
-                name: "Minites",
-                placeholder: "Minites",
+                name: "Minutes",
+                placeholder: "Minutes",
             },
             {
-                name: "Secound",
-                placeholder: "Secound",
+                name: "Second",
+                placeholder: "Second",
             },
         ],
     })
@@ -198,17 +202,7 @@ console.log(parseFloat(hr))
                 
                 <AddBackHeaderButton text={Name} />
                 <Totaltime pathOfSwitchData={"/" + key} />
-                <PieChart
-                    data={data}
-                    width={Dimensions.get('window').width-40}
-                    height={200}
-                    chartConfig={chartConfig}
-                    accessor={"unit"}
-                    backgroundColor={"transparent"}
-                    paddingLeft={"0"}
-                    center={[10, 10]}
-                    style={{margin:20}}
-                />
+                
                 <View
                 style={{
                     flex: 1,

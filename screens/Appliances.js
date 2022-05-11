@@ -23,8 +23,7 @@ export default function ProductScreen() {
     const querySnapshot =  getDocs(q).then(async(querySnapshot)=>{
       if(querySnapshot.empty)
       {
-        fire({
-          message: "Room Does Not Exist"});
+          alert("Room Does Not Exist");
       }
       else {
         querySnapshot.forEach(async(doc) => {
@@ -44,7 +43,6 @@ export default function ProductScreen() {
     <View style={[
       { flex: 1 },
       { backgroundColor: COLORS.white }]}>
-      <AlertBox />
       <ScrollView>
        
       <AddHeaderButton text="Add Appliances" />

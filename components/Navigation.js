@@ -10,16 +10,31 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddRoomsScreen from '../screens/AddRoom';
 import { Text,StyleSheet,View} from 'react-native';
 import ApplianceInner from '../screens/ApplianceInnerScreen';
+import AddRoomPage from '../screens/AddRoomPage';
+import ApplincesList from '../screens/ApplincesList';
+import COLORS from '../const/colors';
 
 const Appstack = createStackNavigator();
 const AppNav = () =>{
   return(
     < Appstack.Navigator>
-      <Appstack.Screen name="AllProduct" component={ ProductScreen }  options={{headerShown: false}}/>
-      <Appstack.Screen name="InnerProduct" component={ ApplianceInner }  options={{headerShown: false}}/>
+      <Appstack.Screen name="findRoom" component={ ProductScreen }  options={{headerShown: false}}/>
+      <Appstack.Screen name="AddNewApp" component={ AddAppliancesPage }  options={{headerShown: false}}/>
     </ Appstack.Navigator>
   )
     
+}
+const Ap = createStackNavigator();
+
+const innerNavi = () =>{
+  return(
+    < Ap.Navigator initialRouteName='RoomList'>
+    < Ap.Screen name="RoomList" component={ RoomsScreen }  options={{headerShown: false}} />
+      < Ap.Screen name="ApList" component={ ApplincesList }  options={{headerShown: false}} />
+      < Ap.Screen name="AppInner" component={ ApplianceInner } options={{headerShown: false}} />
+    </ Ap.Navigator>
+  )
+
 }
 
 const Ar = createStackNavigator();
@@ -27,7 +42,7 @@ const Ar = createStackNavigator();
 const RoomNav = () =>{
   return(
     < Ar.Navigator initialRouteName='AddRoom'>
-      < Ar.Screen name="AddRoom" component={ RoomsScreen }  options={{headerShown: false}}/>
+      < Ar.Screen name="AddRoom" component={ AddRoomPage }  options={{headerShown: false}}/>
       < Ar.Screen name="AddApp" component={ AddAppliancesPage } options={{headerShown: false}}/>
     </ Ar.Navigator>
   )
@@ -45,7 +60,7 @@ const Tabs = () => {
                 "tabBarShowLabel":false,
                 "tabBarStyle":{
                     "position":'absolute',
-                    "backgroundColor":'#301A4B',
+                    "backgroundColor":'black',
                     "bottom":20,
                     "left":20,
                     "right":20,
@@ -54,7 +69,7 @@ const Tabs = () => {
                     "height":80,
                     ...style.shadow
                 },
-                headerStyle: { backgroundColor: '#301A4B' },
+                headerStyle: { backgroundColor: 'black' },
                 headerTintColor: '#fff',
                 headerTitleStyle: { fontWeight: 'bold',padding:10},
                 tabBarHideOnKeyboard: true,
@@ -75,7 +90,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Rooms"
-                component={RoomNav}
+                component={innerNavi}
                 options={{
                     tabBarColor: '#ffd43b',
                     title:'All Rooms',
@@ -91,12 +106,12 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Add Rooms"
-                component={AddRoomsScreen}
+                component={RoomNav}
                 options={{
                     tabBarColor: '#d02760',
                     tabBarIcon: ({color,focused}) => (
-                        <View style={{backgroundColor:focused?'#ffd43b':'#fff',borderRadius:50,position:'absolute',top:-25,padding:10,borderWidth:5,borderColor:'#301A4B'}}>
-                            <Icon color={focused?'#000':'#301A4B'} name="plus" style={style.plus}  />
+                        <View style={{backgroundColor:focused?'#ffd43b':'#fff',borderRadius:50,position:'absolute',top:-25,padding:10,borderWidth:5,borderColor:'black'}}>
+                            <Icon color={focused?'#000':'black'} name="plus" style={style.plus}  />
                         </View>
                     ),
                     headerShown:false

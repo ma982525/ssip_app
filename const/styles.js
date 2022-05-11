@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
 
   inputView: {
-    backgroundColor: "#f0eaf8",
+    backgroundColor: "#ffc5c580",
     borderRadius: 5,
     textAlign:'center',
     width: "70%",
@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputView100: {
-    backgroundColor: "#f0eaf8",
+    backgroundColor: "#ffc5c580",
     borderRadius: 5,
     textAlign:'center',
     width: "100%",
-    height: 45,
+    height: 50,
     marginTop: 20,
     alignItems: "center",
   },
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft:20,
     width:'100%',
-    borderColor:COLORS.themeBorder,
+    borderColor:"#fe7f7f70",
     borderWidth:1,
     borderRadius:5,
     color:'black'
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
-    backgroundColor: "#301A4B",
+    marginTop: 0,
+    backgroundColor: COLORS.black,
   },
   TextView:{
     fontWeight: "bold",
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
   TextOfButtonInner2:{
     fontSize: 16,
     color: COLORS.white,
+    fontWeight:"bold",
     alignSelf:'center',
   },
   TextOfButtonInner:{
@@ -115,17 +116,13 @@ const styles = StyleSheet.create({
   },
   Submit: { 
     // Header top add button
-  backgroundColor: COLORS.theme,
+  backgroundColor: COLORS.greens,
+  borderColor:"green",
+  borderWidth:2,
   justifyContent:"center",
+  fontWeight:"bold",
   borderRadius: 8,
-  shadowColor:COLORS.yellow,
-      shadowOffset:{
-          width:0,
-          height:20,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 5.5,
-      elevation: 10
+  
 },
   buttonAdd: { 
       // Header top add button
@@ -156,7 +153,7 @@ const styles = StyleSheet.create({
 
     marginsetOfTextConatiner:
     {
-     paddingVertical:30,
+     paddingVertical:20,
      marginLeft:20,
      marginRight:20
     },
